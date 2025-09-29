@@ -33,21 +33,19 @@ body {
   overflow-wrap: break-word;
   min-height: 50vh;
   display: flex;
-  flex-direction: column; /* Stack children vertically */
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1.5rem; /* Space between title and content */
+  gap: 1.5rem;
 }
 
-/* Verse title styling */
 .slide-title {
   font-size: 1.2em;
   font-weight: bold;
   margin-bottom: 0.5rem;
-  color: #ffd700; /* Gold color for titles */
+  color: #ffd700;
 }
 
-/* Verse content styling */
 .slide-content {
   max-width: 90%;
 }
@@ -60,13 +58,27 @@ button {
   background: #333;
   color: #fff;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all 0.3s ease;
   font-size: 16px;
   min-height: 48px;
 }
 
 button:hover {
   background: #555;
+}
+
+/* Transparent background for navigation buttons */
+#prevBtn, #nextBtn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+#prevBtn:hover, #nextBtn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
 }
 
 input {
@@ -81,7 +93,6 @@ input {
   box-sizing: border-box;
 }
 
-/* Navigation Buttons Container */
 .nav-buttons {
   display: flex;
   justify-content: center;
@@ -117,6 +128,12 @@ input {
   
   .slide-title {
     font-size: 1.1em;
+  }
+  
+  /* Adjust nav buttons for mobile */
+  #prevBtn, #nextBtn {
+    width: 100%;
+    margin: 5px 0;
   }
 }
 
@@ -182,6 +199,18 @@ input {
   }
   
   .slide-title {
-    color: #b8860b; /* Dark gold for light mode */
+    color: #b8860b;
+  }
+  
+  /* Transparent nav buttons in light mode */
+  #prevBtn, #nextBtn {
+    background: transparent;
+    border-color: rgba(0, 0, 0, 0.2);
+    color: #000;
+  }
+  
+  #prevBtn:hover, #nextBtn:hover {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.3);
   }
 }
