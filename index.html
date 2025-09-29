@@ -1,25 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lyrics Presenter</title>
-<link rel="stylesheet" href="css/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Lyrics Presenter for live performances">
+  <title>Lyrics Presenter</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* Fallback font in case Google Fonts fails */
+    body {
+      font-family: 'Roboto', sans-serif;
+    }
+  </style>
 </head>
 <body>
-<div id="menu">
-<h1>Lyrics Presenter</h1>
-<input type="text" id="search" placeholder="Search songs...">
-<div id="songList"></div>
-</div>
-<div id="presentation" style="display:none;">
-<button id="backBtn">Back</button>
-<div id="slideContainer"></div>
-<div>
-<button id="prevBtn">Previous</button>
-<button id="nextBtn">Next</button>
-</div>
-</div>
-<script src="js/app.js"></script>
+  <div id="menu">
+    <header>
+      <h1>Lyrics Presenter</h1>
+    </header>
+    <main>
+      <div class="search-container">
+        <input type="text" id="search" placeholder="Search songs..." aria-label="Search songs">
+        <div id="loadingIndicator" class="loading" style="display: none;"></div>
+      </div>
+      <div id="songList" role="list"></div>
+    </main>
+  </div>
+  
+  <div id="presentation" style="display:none;" aria-hidden="true">
+    <button id="backBtn" aria-label="Back to song list">Back</button>
+    <main>
+      <div id="slideContainer" role="document" aria-live="polite"></div>
+      <nav class="nav-buttons" aria-label="Slide navigation">
+        <button id="prevBtn" aria-label="Previous slide">Previous</button>
+        <button id="nextBtn" aria-label="Next slide">Next</button>
+      </nav>
+    </main>
+  </div>
+  
+  <script src="js/app.js"></script>
+  <script>
+    // Touch gesture support
+    document.addEventListener('DOMContentLoaded', () => {
+      const slideContainer = document.getElementById('slideContainer');
+      let touchStartX = 0;
+      let touchEndX = 0;
+      
+      slideContainer.addEventListener('touchstart', e => {
+        touchStartX = e.changedTouches[0].screenX;
+      });
+      
+      slideContainer.addEventListener('touchend', e => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+      });
+      
+      function handleSwipe() {
+        const swipeThreshold = 50;
+        if (touchEndX < touchStartX - swipeThreshold) {
+          document.getElementById('nextBtn').click();
+        }
+        if (touchEndX > touchStartX + swipeThreshold) {
+          document.getElementById('prevBtn').click();
+        }
+      }
+    });
+  </script>
 </body>
 </html>
