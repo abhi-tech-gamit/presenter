@@ -1,57 +1,50 @@
-let songListDiv = document.getElementById('songList');
-let searchInput = document.getElementById('search');
-let menuDiv = document.getElementById('menu');
-let presDiv = document.getElementById('presentation');
-let slideContainer = document.getElementById('slideContainer');
-let backBtn = document.getElementById('backBtn');
-let prevBtn = document.getElementById('prevBtn');
-let nextBtn = document.getElementById('nextBtn');
-let songs = [];
-let currentSong = null;
 let currentSlide = 0;
+let songData = null;
 
-async function loadSongs() {
-    let res = await fetch('songs/index.json');
-    songs = await res.json();
-    renderSongList(songs);
-}
-
-function renderSongList(list) {
-    songListDiv.innerHTML = '';
-    list.forEach(s => {
-        let div = document.createElement('div');
-        div.textContent = s.title + ' • ' + s.author;
-        div.onclick = ()=>startPresentation(s.file);
-        songListDiv.appendChild(div);
-    });
-}
-
-searchInput.addEventListener('input', ()=>{
-    let query = searchInput.value.toLowerCase();
-    renderSongList(songs.filter(s=>s.title.toLowerCase().includes(query) || s.author.toLowerCase().includes(query)));
+// Load lyrics when page loads
+window.addEventListener('DOMContentLoaded', async () => {
+  const response = await fetch('lyrics/aaj-ka-ye-din.json');
+  songData = await response.json();
+  displaySlide(currentSlide);
 });
 
-async function startPresentation(file) {
-    let res = await fetch('songs/' + file);
-    currentSong = await res.json();
-    currentSlide = 0;
-    menuDiv.style.display = 'none';
-    presDiv.style.display = 'block';
-    showSlide();
+function displaySlide(index) {
+  if (!songData || index < 0 || index >= songData.slides.length) return;
+  
+  const slide = songData.slides[index];
+  const slideContainer = document.getElementById('slideContainer');
+  
+  // Clear previous content
+  slideContainer.innerHTML = '';
+  
+  // Create title
+  const title = document.createElement('div');
+  title.className = 'slide-title';
+  title.textContent = slide.title;
+  slideContainer.appendChild(title);
+  
+  // Create content
+  const content = document.createElement('div');
+  content.className = 'slide-content';
+  content.innerHTML = slide.lyrics.replace(/\n/g, '<br>');
+  slideContainer.appendChild(content);
+  
+  // Update navigation buttons
+  document.getElementById('prevBtn').disabled = index === 0;
+  document.getElementById('nextBtn').disabled = index === songData.slides.length - 1;
 }
 
-function showSlide() {
-    slideContainer.style.opacity = 0;
-    setTimeout(()=>{
-        slideContainer.innerHTML = '<h2>'+currentSong.slides[currentSlide].title+'</h2><p>'+currentSong.slides[currentSlide].lyrics.replace(/\n/g,'<br>')+'</p>';
-        slideContainer.style.opacity = 1;
-    },200);
-}
+// Navigation event listeners
+document.getElementById('prevBtn').addEventListener('click', () => {
+  if (currentSlide > 0) {
+    currentSlide--;
+    displaySlide(currentSlide);
+  }
+});
 
-function nextSlide(){if(currentSlide<currentSong.slides.length-1){currentSlide++;showSlide();}}
-function prevSlide(){if(currentSlide>0){currentSlide--;showSlide();}}
-backBtn.onclick=()=>{presDiv.style.display='none'; menuDiv.style.display='block';}
-nextBtn.onclick=nextSlide; prevBtn.onclick=prevSlide;
-document.addEventListener('keydown',(e)=>{if(!currentSong) return; if(e.key==='ArrowRight'||e.key===' '){nextSlide();} else if(e.key==='ArrowLeft'){prevSlide();} else if(e.key==='Escape'){backBtn.onclick();}});
-
-loadSongs();
+document.getElementById('nextBtn').addEventListener('click', () => {
+  if (currentSlide < songData.slides.length - 1) {
+    currentSlide++;
+    displaySlide(currentSlide);
+  }
+});
