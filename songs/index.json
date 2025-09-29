@@ -1,4 +1,12 @@
 [
-  "song1.json",
-  "song2.json"
+    {
+        "title": "Amazing Grace",
+        "author": "John Newton",
+        "file": "amazing-grace.json"
+    },
+    {
+        "title": "How Great Thou Art",
+        "author": "Carl Boberg",
+        "file": "how-great-thou-art.json"
+    }
 ]

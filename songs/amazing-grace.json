@@ -1,0 +1,14 @@
+{
+    "title": "Amazing Grace",
+    "author": "John Newton",
+    "slides": [
+        {
+            "title": "Verse 1",
+            "lyrics": "Amazing grace, how sweet the sound\nThat saved a wretch like me\nI once was lost, but now am found\nWas blind, but now I see"
+        },
+        {
+            "title": "Verse 2",
+            "lyrics": "'Twas grace that taught my heart to fear\nAnd grace my fears relieved\nHow precious did that grace appear\nThe hour I first believed"
+        }
+    ]
+}
