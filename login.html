@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Lyrics Presenter for live performances">
+  <title>Lyrics Presenter - Login</title>
+  <link rel="stylesheet" href="css/login.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="auth-container">
+    <!-- Music Notes Background -->
+    <div class="music-notes">
+      <div class="music-note">♪</div>
+      <div class="music-note">♫</div>
+      <div class="music-note">♬</div>
+      <div class="music-note">♭</div>
+      <div class="music-note">♮</div>
+      <div class="music-note">♯</div>
+      <div class="music-note">♪</div>
+      <div class="music-note">♫</div>
+    </div>
+    
+    <!-- Instrument Carousel -->
+    <div class="instrument-carousel">
+      <div class="carousel">
+        <span style="--i:1"><img src="https://img.icons8.com/color/48/000000/guitar.png" alt="Guitar"></span>
+        <span style="--i:2"><img src="https://img.icons8.com/color/48/000000/piano.png" alt="Piano"></span>
+        <span style="--i:3"><img src="https://img.icons8.com/color/48/000000/drums.png" alt="Drums"></span>
+        <span style="--i:4"><img src="https://img.icons8.com/color/48/000000/microphone.png" alt="Microphone"></span>
+        <span style="--i:5"><img src="https://img.icons8.com/color/48/000000/violin.png" alt="Violin"></span>
+      </div>
+    </div>
+    
+    <div class="auth-box">
+      <!-- Login Form -->
+      <div id="loginForm" class="auth-form">
+        <h2>Welcome Back</h2>
+        <p class="auth-subtitle">Sign in to access your lyrics</p>
+        
+        <form id="loginFormElement">
+          <div class="form-group">
+            <label for="loginEmail">Email</label>
+            <input type="email" id="loginEmail" placeholder="your@email.com" required>
+          </div>
+          <div class="form-group">
+            <label for="loginPassword">Password</label>
+            <input type="password" id="loginPassword" placeholder="••••••••" required>
+          </div>
+          <div class="error-message" id="loginError"></div>
+          <button type="submit" class="auth-btn">Sign In</button>
+          <div class="auth-toggle">
+            Don't have an account? <a href="#" id="showSignup">Sign Up</a>
+          </div>
+        </form>
+      </div>
+      
+      <!-- Signup Form -->
+      <div id="signupForm" class="auth-form" style="display: none;">
+        <h2>Create Account</h2>
+        <p class="auth-subtitle">Join our community of musicians</p>
+        
+        <form id="signupFormElement">
+          <div class="form-group">
+            <label for="signupUsername">Username</label>
+            <input type="text" id="signupUsername" placeholder="Choose a username" required>
+          </div>
+          <div class="form-group">
+            <label for="signupEmail">Email</label>
+            <input type="email" id="signupEmail" placeholder="your@email.com" required>
+          </div>
+          <div class="form-group">
+            <label for="signupPassword">Password</label>
+            <input type="password" id="signupPassword" placeholder="Create a password" required>
+          </div>
+          <div class="form-group">
+            <label for="signupConfirmPassword">Confirm Password</label>
+            <input type="password" id="signupConfirmPassword" placeholder="Confirm your password" required>
+          </div>
+          <div class="error-message" id="signupError"></div>
+          <button type="submit" class="auth-btn">Sign Up</button>
+          <div class="auth-toggle">
+            Already have an account? <a href="#" id="showLogin">Login</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth-compat.js"></script>
+  
+  <!-- Login Page JavaScript -->
+  <script src="js/login.js"></script>
+</body>
+</html>
