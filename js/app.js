@@ -23,13 +23,6 @@ const backBtn = document.getElementById('backBtn');
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
 const loadingIndicator = document.getElementById('loadingIndicator');
-const authContainer = document.getElementById('authContainer');
-const loginForm = document.getElementById('loginForm');
-const signupForm = document.getElementById('signupForm');
-const loginFormElement = document.getElementById('loginFormElement');
-const signupFormElement = document.getElementById('signupFormElement');
-const loginError = document.getElementById('loginError');
-const signupError = document.getElementById('signupError');
 const userInfo = document.getElementById('userInfo');
 
 // App State
@@ -38,63 +31,20 @@ let currentSong = null;
 let currentSlide = 0;
 let currentUser = null;
 
-// Authentication Functions
-function signUp(email, password, username) {
-  return auth.createUserWithEmailAndPassword(email, password)
-    .then((userCredential) => {
-      // Update user profile with display name
-      return userCredential.user.updateProfile({
-        displayName: username
-      });
-    });
-}
-
-function logIn(email, password) {
-  return auth.signInWithEmailAndPassword(email, password);
-}
-
-function logOut() {
-  return auth.signOut();
-}
-
-// Auth State Observer
+// Authentication Check and User State
 auth.onAuthStateChanged(user => {
   if (user) {
     // User is signed in
     currentUser = user;
-    hideAuthContainer();
     updateMenuForUser(user);
     loadSongs();
   } else {
-    // User is signed out
-    currentUser = null;
-    showAuthContainer();
-    showLoginForm();
+    // User is signed out, redirect to login page
+    window.location.href = 'login.html';
   }
 });
 
 // UI Functions
-function showAuthContainer() {
-  authContainer.style.display = 'flex';
-  menuDiv.style.display = 'none';
-  presDiv.style.display = 'none';
-}
-
-function hideAuthContainer() {
-  authContainer.style.display = 'none';
-  menuDiv.style.display = 'block';
-}
-
-function showLoginForm() {
-  loginForm.style.display = 'block';
-  signupForm.style.display = 'none';
-}
-
-function showSignupForm() {
-  loginForm.style.display = 'none';
-  signupForm.style.display = 'block';
-}
-
 function updateMenuForUser(user) {
   if (userInfo) {
     userInfo.innerHTML = `
@@ -105,68 +55,14 @@ function updateMenuForUser(user) {
     `;
     
     document.getElementById('logoutBtn').addEventListener('click', () => {
-      logOut().then(() => {
-        console.log('User logged out');
+      auth.signOut().then(() => {
+        // After logout, redirect to login page
+        window.location.href = 'login.html';
       }).catch(error => {
         console.error('Logout error:', error);
       });
     });
   }
-}
-
-// Setup Auth Event Listeners
-function setupAuthEventListeners() {
-  // Login form submission
-  loginFormElement.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const email = document.getElementById('loginEmail').value;
-    const password = document.getElementById('loginPassword').value;
-    
-    logIn(email, password)
-      .then(() => {
-        loginError.textContent = '';
-      })
-      .catch(error => {
-        loginError.textContent = error.message;
-      });
-  });
-  
-  // Signup form submission
-  signupFormElement.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const username = document.getElementById('signupUsername').value;
-    const email = document.getElementById('signupEmail').value;
-    const password = document.getElementById('signupPassword').value;
-    const confirmPassword = document.getElementById('signupConfirmPassword').value;
-    
-    // Clear previous errors
-    signupError.textContent = '';
-    
-    // Validate passwords match
-    if (password !== confirmPassword) {
-      signupError.textContent = 'Passwords do not match';
-      return;
-    }
-    
-    signUp(email, password, username)
-      .then(() => {
-        signupError.textContent = '';
-      })
-      .catch(error => {
-        signupError.textContent = error.message;
-      });
-  });
-  
-  // Toggle between login and signup
-  document.getElementById('showSignup').addEventListener('click', (e) => {
-    e.preventDefault();
-    showSignupForm();
-  });
-  
-  document.getElementById('showLogin').addEventListener('click', (e) => {
-    e.preventDefault();
-    showLoginForm();
-  });
 }
 
 // Song Functions
@@ -275,9 +171,4 @@ document.addEventListener('keydown', (e) => {
   } else if (e.key === 'Escape') {
     backBtn.onclick();
   }
-});
-
-// Initialize app
-document.addEventListener('DOMContentLoaded', () => {
-  setupAuthEventListeners();
 });
