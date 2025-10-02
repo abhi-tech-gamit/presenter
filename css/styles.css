@@ -239,22 +239,22 @@ body.blue-theme .slide-title-area {
   margin: 0;
 }
 
-/* Slide Container */
+/* Slide Container - Reduced padding to allow more space for text */
 #slideContainer {
   flex: 1;
   overflow-y: auto;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  padding: clamp(120px, 15vw, 180px) clamp(20px, 5vw, 60px) clamp(20px, 5vw, 60px);
+  align-items: center; /* Changed from flex-start to center */
+  padding: clamp(80px, 10vw, 120px) clamp(20px, 3vw, 40px); /* Reduced padding */
   position: relative;
 }
 
-/* Slide Content */
+/* Slide Content - Reduced padding and adjusted for larger text */
 .slide-content {
   max-width: 90%;
   margin: 0 auto;
-  padding: 30px 40px;
+  padding: 20px 30px; /* Reduced from 30px 40px */
   background: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -276,10 +276,10 @@ body.blue-theme .slide-content {
     inset 0 1px 10px rgba(255, 255, 255, 0.2);
 }
 
+/* Significantly enlarged text size for lyrics */
 #slideText {
-  /* Increased font size for lyrics */
-  font-size: clamp(2.5rem, 5vw, 4rem); /* Changed from clamp(1.8rem, 4vw, 2.8rem) */
-  line-height: 1.5; /* Adjusted line height for larger text */
+  font-size: clamp(4rem, 12vw, 8rem); /* Much larger font size */
+  line-height: 1.2; /* Tighter line height for large text */
   text-align: center;
   text-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
   max-width: 100%;
@@ -288,6 +288,7 @@ body.blue-theme .slide-content {
   position: relative;
   z-index: 2;
   color: #fff; /* Ensure text is white */
+  font-weight: 700; /* Added bold weight for better visibility */
 }
 
 body.blue-theme #slideText {
@@ -444,11 +445,11 @@ body.blue-theme .font-controls {
   }
   
   #slideContainer {
-    padding: 100px;
+    padding: 60px 15px; /* Reduced padding for mobile */
   }
   
-  /* Adjusted font size for mobile */
+  /* Adjusted font size for mobile - still large but slightly smaller */
   #slideText {
-    font-size: clamp(2rem, 6vw, 3.5rem);
+    font-size: clamp(3rem, 10vw, 6rem);
   }
 }
