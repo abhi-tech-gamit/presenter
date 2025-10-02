@@ -364,6 +364,41 @@ body.blue-theme .logout-btn:hover {
   to { transform: rotate(360deg); }
 }
 
+/* Font Size Controls */
+.font-controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  position: fixed;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  z-index: 102;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+body.blue-theme .font-controls {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 15px;
+  margin: 20px;
+  position: relative;
+}
+
+.font-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* Responsive Adjustments */
 @media (max-width: 768px) {
   .header-controls {
@@ -408,4 +443,6 @@ body.blue-theme .logout-btn:hover {
   }
   
   #slideContainer {
-    padding: 100px
+    padding: 100px;
+  }
+}
