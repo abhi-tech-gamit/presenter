@@ -74,6 +74,133 @@ input {
   margin-top: 20px;
 }
 
+/* Authentication Styles */
+.auth-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.auth-box {
+  background: #222;
+  border-radius: 5px;
+  padding: 30px;
+  width: 90%;
+  max-width: 400px;
+  border: 1px solid #555;
+}
+
+.auth-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #ccc;
+  font-size: 14px;
+}
+
+.auth-btn {
+  width: 100%;
+  padding: 12px;
+  background: #333;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 10px;
+}
+
+.auth-btn:hover {
+  background: #555;
+}
+
+.auth-toggle {
+  text-align: center;
+  margin-top: 15px;
+  color: #ccc;
+  font-size: 14px;
+}
+
+.auth-toggle a {
+  color: #74b9ff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.auth-toggle a:hover {
+  text-decoration: underline;
+}
+
+.error-message {
+  color: #ff7675;
+  margin-top: 10px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.user-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #222;
+  padding: 10px 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  border: 1px solid #555;
+}
+
+.username {
+  font-weight: bold;
+}
+
+.logout-btn {
+  background: #333;
+  border: 1px solid #555;
+  color: white;
+  padding: 5px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.logout-btn:hover {
+  background: #555;
+}
+
+/* Loading Animation */
+.loading {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255,255,255,.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 1s ease-in-out infinite;
+  margin-left: 10px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 /* Responsive Adjustments */
 @media (max-width: 768px) {
   #menu {
@@ -99,6 +226,15 @@ input {
     font-size: 1.8rem;
     padding: 20px;
   }
+  
+  .auth-box {
+    padding: 20px;
+    width: 95%;
+  }
+  
+  .auth-form h2 {
+    font-size: 1.3rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -115,22 +251,21 @@ input {
   h1 {
     font-size: 1.8rem;
   }
-}
-
-/* Loading Animation */
-.loading {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  border: 3px solid rgba(255,255,255,.3);
-  border-radius: 50%;
-  border-top-color: #fff;
-  animation: spin 1s ease-in-out infinite;
-  margin-left: 10px;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
+  
+  .auth-box {
+    padding: 15px;
+    width: 90%;
+  }
+  
+  .form-group input {
+    padding: 10px;
+    font-size: 14px;
+  }
+  
+  .auth-btn {
+    padding: 10px;
+    font-size: 14px;
+  }
 }
 
 /* Dark/Light Mode Support */
@@ -156,5 +291,33 @@ input {
   
   #songList div:hover {
     background-color: #f5f5f5;
+  }
+  
+  .auth-box {
+    background: #f0f0f0;
+    border-color: #ccc;
+  }
+  
+  .user-info {
+    background: #f0f0f0;
+    border-color: #ccc;
+  }
+  
+  .logout-btn {
+    background: #e0e0e0;
+    border-color: #ccc;
+    color: #000;
+  }
+  
+  .logout-btn:hover {
+    background: #d0d0d0;
+  }
+  
+  .auth-toggle {
+    color: #666;
+  }
+  
+  .auth-toggle a {
+    color: #0984e3;
   }
 }
