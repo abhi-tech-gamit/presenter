@@ -1,58 +1,216 @@
-let songListDiv = document.getElementById('songList');
-let searchInput = document.getElementById('search');
-let menuDiv = document.getElementById('menu');
-let presDiv = document.getElementById('presentation');
-let slideContainer = document.getElementById('slideContainer');
-let slideTitle = document.getElementById('slideTitle');
-let slideContent = document.getElementById('slideContent');
-let backBtn = document.getElementById('backBtn');
-let prevBtn = document.getElementById('prevBtn');
-let nextBtn = document.getElementById('nextBtn');
-let decreaseFontBtn = document.getElementById('decreaseFont');
-let resetFontBtn = document.getElementById('resetFont');
-let increaseFontBtn = document.getElementById('increaseFont');
-let loadingIndicator = document.getElementById('loadingIndicator');
-let songs = [];
-let currentSong = null;
-let currentSlide = 0;
-let currentFontSize = 100; // Default font size in percentage
+    // Initialize Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyDMSPQN0kUFsZe9km7g7TCB7g39T9XkGGg",
+      authDomain: "presenter-488c6.firebaseapp.com",
+      projectId: "presenter-488c6",
+      storageBucket: "presenter-488c6.firebasestorage.app",
+      messagingSenderId: "758661053627",
+      appId: "1:758661053627:web:1c08b776ba5fd248b7fd9e"
+    };
 
-async function loadSongs() {
-    try {
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    // DOM Elements
+    const songListDiv = document.getElementById('songList');
+    const searchInput = document.getElementById('search');
+    const menuDiv = document.getElementById('menu');
+    const presDiv = document.getElementById('presentation');
+    const slideContainer = document.getElementById('slideContainer');
+    const slideTitle = document.getElementById('slideTitle');
+    const slideContent = document.getElementById('slideContent');
+    const backBtn = document.getElementById('backBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const decreaseFontBtn = document.getElementById('decreaseFont');
+    const resetFontBtn = document.getElementById('resetFont');
+    const increaseFontBtn = document.getElementById('increaseFont');
+    const loadingIndicator = document.getElementById('loadingIndicator');
+    const authContainer = document.getElementById('authContainer');
+    const loginForm = document.getElementById('loginForm');
+    const signupForm = document.getElementById('signupForm');
+    const loginFormElement = document.getElementById('loginFormElement');
+    const signupFormElement = document.getElementById('signupFormElement');
+    const loginError = document.getElementById('loginError');
+    const signupError = document.getElementById('signupError');
+    const userInfo = document.getElementById('userInfo');
+
+    // App State
+    let songs = [];
+    let currentSong = null;
+    let currentSlide = 0;
+    let currentFontSize = 100;
+    let currentUser = null;
+
+    // Authentication Functions
+    function signUp(email, password, username) {
+      return auth.createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          // Update user profile with display name
+          return userCredential.user.updateProfile({
+            displayName: username
+          });
+        });
+    }
+
+    function logIn(email, password) {
+      return auth.signInWithEmailAndPassword(email, password);
+    }
+
+    function logOut() {
+      return auth.signOut();
+    }
+
+    // Auth State Observer
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        // User is signed in
+        currentUser = user;
+        hideAuthContainer();
+        updateMenuForUser(user);
+        loadSongs();
+      } else {
+        // User is signed out
+        currentUser = null;
+        showAuthContainer();
+        showLoginForm();
+      }
+    });
+
+    // UI Functions
+    function showAuthContainer() {
+      authContainer.style.display = 'flex';
+      menuDiv.style.display = 'none';
+      presDiv.style.display = 'none';
+    }
+
+    function hideAuthContainer() {
+      authContainer.style.display = 'none';
+      menuDiv.style.display = 'block';
+    }
+
+    function showLoginForm() {
+      loginForm.style.display = 'block';
+      signupForm.style.display = 'none';
+    }
+
+    function showSignupForm() {
+      loginForm.style.display = 'none';
+      signupForm.style.display = 'block';
+    }
+
+    function updateMenuForUser(user) {
+      if (userInfo) {
+        userInfo.innerHTML = `
+          <div class="user-info">
+            <span class="username">${user.displayName || user.email}</span>
+            <button id="logoutBtn" class="logout-btn">Logout</button>
+          </div>
+        `;
+        
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+          logOut().then(() => {
+            console.log('User logged out');
+          }).catch(error => {
+            console.error('Logout error:', error);
+          });
+        });
+      }
+    }
+
+    // Setup Auth Event Listeners
+    function setupAuthEventListeners() {
+      // Login form submission
+      loginFormElement.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+        
+        logIn(email, password)
+          .then(() => {
+            loginError.textContent = '';
+          })
+          .catch(error => {
+            loginError.textContent = error.message;
+          });
+      });
+      
+      // Signup form submission
+      signupFormElement.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const username = document.getElementById('signupUsername').value;
+        const email = document.getElementById('signupEmail').value;
+        const password = document.getElementById('signupPassword').value;
+        const confirmPassword = document.getElementById('signupConfirmPassword').value;
+        
+        // Clear previous errors
+        signupError.textContent = '';
+        
+        // Validate passwords match
+        if (password !== confirmPassword) {
+          signupError.textContent = 'Passwords do not match';
+          return;
+        }
+        
+        signUp(email, password, username)
+          .then(() => {
+            signupError.textContent = '';
+          })
+          .catch(error => {
+            signupError.textContent = error.message;
+          });
+      });
+      
+      // Toggle between login and signup
+      document.getElementById('showSignup').addEventListener('click', (e) => {
+        e.preventDefault();
+        showSignupForm();
+      });
+      
+      document.getElementById('showLogin').addEventListener('click', (e) => {
+        e.preventDefault();
+        showLoginForm();
+      });
+    }
+
+    // Song Functions
+    async function loadSongs() {
+      try {
         let res = await fetch('songs/index.json');
         songs = await res.json();
         renderSongList(songs);
-    } catch (error) {
+      } catch (error) {
         console.error('Error loading songs:', error);
         songListDiv.innerHTML = '<div style="text-align: center; padding: 20px;">Error loading songs. Please check your connection.</div>';
+      }
     }
-}
 
-function renderSongList(list) {
-    songListDiv.innerHTML = '';
-    if (list.length === 0) {
+    function renderSongList(list) {
+      songListDiv.innerHTML = '';
+      if (list.length === 0) {
         songListDiv.innerHTML = '<div style="text-align: center; padding: 20px; grid-column: 1/-1;">No songs found</div>';
         return;
-    }
-    
-    list.forEach(s => {
+      }
+      
+      list.forEach(s => {
         let div = document.createElement('div');
         div.textContent = s.title + ' • ' + s.author;
         div.onclick = () => startPresentation(s.file);
         songListDiv.appendChild(div);
-    });
-}
+      });
+    }
 
-searchInput.addEventListener('input', () => {
-    let query = searchInput.value.toLowerCase();
-    renderSongList(songs.filter(s => 
+    searchInput.addEventListener('input', () => {
+      let query = searchInput.value.toLowerCase();
+      renderSongList(songs.filter(s => 
         s.title.toLowerCase().includes(query) || 
         s.author.toLowerCase().includes(query)
-    ));
-});
+      ));
+    });
 
-async function startPresentation(file) {
-    try {
+    // Presentation Functions
+    async function startPresentation(file) {
+      try {
         loadingIndicator.style.display = 'block';
         let res = await fetch('songs/' + file);
         currentSong = await res.json();
@@ -69,24 +227,24 @@ async function startPresentation(file) {
         
         // Show first slide
         showSlide();
-    } catch (error) {
+      } catch (error) {
         console.error('Error loading song:', error);
         alert('Error loading song. Please try again.');
-    } finally {
+      } finally {
         loadingIndicator.style.display = 'none';
+      }
     }
-}
 
-function showSlide() {
-    if (!currentSong || !currentSong.slides || currentSlide < 0 || currentSlide >= currentSong.slides.length) {
+    function showSlide() {
+      if (!currentSong || !currentSong.slides || currentSlide < 0 || currentSlide >= currentSong.slides.length) {
         return;
-    }
-    
-    // Update title with fade animation
-    slideTitle.style.opacity = '0';
-    slideContent.style.opacity = '0';
-    
-    setTimeout(() => {
+      }
+      
+      // Update title with fade animation
+      slideTitle.style.opacity = '0';
+      slideContent.style.opacity = '0';
+      
+      setTimeout(() => {
         // Update title and content
         slideTitle.textContent = currentSong.slides[currentSlide].title;
         slideContent.innerHTML = currentSong.slides[currentSlide].lyrics.replace(/\n/g,'<br>');
@@ -97,114 +255,116 @@ function showSlide() {
         // Fade in both title and content
         slideTitle.style.opacity = '1';
         slideContent.style.opacity = '1';
-    }, 200);
-}
+      }, 200);
+    }
 
-function nextSlide() {
-    if (currentSlide < currentSong.slides.length - 1) {
+    function nextSlide() {
+      if (currentSlide < currentSong.slides.length - 1) {
         currentSlide++;
         showSlide();
+      }
     }
-}
 
-function prevSlide() {
-    if (currentSlide > 0) {
+    function prevSlide() {
+      if (currentSlide > 0) {
         currentSlide--;
         showSlide();
+      }
     }
-}
 
-// Font size adjustment functions
-function updateFontSize() {
-    slideContent.style.fontSize = `${currentFontSize}%`;
-}
+    // Font size adjustment functions
+    function updateFontSize() {
+      slideContent.style.fontSize = `${currentFontSize}%`;
+    }
 
-function decreaseFontSize() {
-    if (currentFontSize > 50) { // Minimum 50% of original size
+    function decreaseFontSize() {
+      if (currentFontSize > 50) { // Minimum 50% of original size
         currentFontSize -= 10;
         updateFontSize();
+      }
     }
-}
 
-function increaseFontSize() {
-    if (currentFontSize < 200) { // Maximum 200% of original size
+    function increaseFontSize() {
+      if (currentFontSize < 200) { // Maximum 200% of original size
         currentFontSize += 10;
         updateFontSize();
+      }
     }
-}
 
-function resetFontSize() {
-    currentFontSize = 100;
-    updateFontSize();
-}
+    function resetFontSize() {
+      currentFontSize = 100;
+      updateFontSize();
+    }
 
-// Event listeners
-backBtn.onclick = () => {
-    presDiv.style.display = 'none';
-    presDiv.classList.remove('active');
-    menuDiv.style.display = 'block';
-};
+    // Event listeners
+    backBtn.onclick = () => {
+      presDiv.style.display = 'none';
+      presDiv.classList.remove('active');
+      menuDiv.style.display = 'block';
+    };
 
-nextBtn.onclick = nextSlide;
-prevBtn.onclick = prevSlide;
+    nextBtn.onclick = nextSlide;
+    prevBtn.onclick = prevSlide;
 
-// Font size control event listeners
-decreaseFontBtn.onclick = decreaseFontSize;
-resetFontBtn.onclick = resetFontSize;
-increaseFontBtn.onclick = increaseFontSize;
+    // Font size control event listeners
+    decreaseFontBtn.onclick = decreaseFontSize;
+    resetFontBtn.onclick = resetFontSize;
+    increaseFontBtn.onclick = increaseFontSize;
 
-// Keyboard navigation
-document.addEventListener('keydown', (e) => {
-    if (!currentSong) return; 
-    
-    if (e.key === 'ArrowRight' || e.key === ' ') {
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (!currentSong) return; 
+      
+      if (e.key === 'ArrowRight' || e.key === ' ') {
         e.preventDefault();
         nextSlide();
-    } else if (e.key === 'ArrowLeft') {
+      } else if (e.key === 'ArrowLeft') {
         e.preventDefault();
         prevSlide();
-    } else if (e.key === 'Escape') {
+      } else if (e.key === 'Escape') {
         backBtn.onclick();
-    } else if (e.key === '+' || e.key === '=') {
+      } else if (e.key === '+' || e.key === '=') {
         // Plus key to increase font size
         increaseFontSize();
-    } else if (e.key === '-' || e.key === '_') {
+      } else if (e.key === '-' || e.key === '_') {
         // Minus key to decrease font size
         decreaseFontSize();
-    } else if (e.key === '0') {
+      } else if (e.key === '0') {
         // Zero key to reset font size
         resetFontSize();
-    }
-});
+      }
+    });
 
-// Touch gesture support
-let touchStartX = 0;
-let touchEndX = 0;
+    // Touch gesture support
+    let touchStartX = 0;
+    let touchEndX = 0;
 
-slideContainer.addEventListener('touchstart', e => {
-    touchStartX = e.changedTouches[0].screenX;
-}, { passive: true });
+    slideContainer.addEventListener('touchstart', e => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
 
-slideContainer.addEventListener('touchend', e => {
-    touchEndX = e.changedTouches[0].screenX;
-    handleSwipe();
-}, { passive: true });
+    slideContainer.addEventListener('touchend', e => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    }, { passive: true });
 
-function handleSwipe() {
-    const swipeThreshold = 50;
-    if (touchEndX < touchStartX - swipeThreshold) {
+    function handleSwipe() {
+      const swipeThreshold = 50;
+      if (touchEndX < touchStartX - swipeThreshold) {
         // Swipe left - next slide
         if (currentSlide < currentSong.slides.length - 1) {
-            nextSlide();
+          nextSlide();
         }
-    }
-    if (touchEndX > touchStartX + swipeThreshold) {
+      }
+      if (touchEndX > touchStartX + swipeThreshold) {
         // Swipe right - previous slide
         if (currentSlide > 0) {
-            prevSlide();
+          prevSlide();
         }
+      }
     }
-}
 
-// Initialize
-loadSongs();
+    // Initialize app
+    document.addEventListener('DOMContentLoaded', () => {
+      setupAuthEventListeners();
+    });
