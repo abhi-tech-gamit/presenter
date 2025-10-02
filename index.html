@@ -402,6 +402,140 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
+    /* Authentication Styles */
+    .auth-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .auth-box {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 40px;
+      width: 90%;
+      max-width: 400px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    }
+
+    .auth-form h2 {
+      color: #fff;
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px 15px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-size: 16px;
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #74b9ff;
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 0 0 3px rgba(116, 185, 255, 0.2);
+    }
+
+    .auth-btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(90deg, #74b9ff 0%, #0984e3 100%);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+    }
+
+    .auth-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(116, 185, 255, 0.4);
+    }
+
+    .auth-toggle {
+      text-align: center;
+      margin-top: 20px;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .auth-toggle a {
+      color: #74b9ff;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .auth-toggle a:hover {
+      text-decoration: underline;
+    }
+
+    .error-message {
+      color: #ff7675;
+      margin-top: 10px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .user-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 10px 15px;
+      border-radius: 30px;
+      margin-bottom: 20px;
+    }
+
+    .username {
+      font-weight: 600;
+    }
+
+    .logout-btn {
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      padding: 5px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .logout-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
     /* Responsive Adjustments */
     @media (max-width: 768px) {
       #menu {
@@ -650,9 +784,65 @@
   </style>
 </head>
 <body>
+  <!-- Authentication Container -->
+  <div id="authContainer" style="display: none;">
+    <div class="auth-container">
+      <div class="auth-box">
+        <!-- Login Form -->
+        <div id="loginForm" class="auth-form">
+          <h2>Login to Your Account</h2>
+          <form id="loginFormElement">
+            <div class="form-group">
+              <label for="loginEmail">Email</label>
+              <input type="email" id="loginEmail" required>
+            </div>
+            <div class="form-group">
+              <label for="loginPassword">Password</label>
+              <input type="password" id="loginPassword" required>
+            </div>
+            <div class="error-message" id="loginError"></div>
+            <button type="submit" class="auth-btn">Login</button>
+            <div class="auth-toggle">
+              Don't have an account? <a href="#" id="showSignup">Sign Up</a>
+            </div>
+          </form>
+        </div>
+        
+        <!-- Signup Form -->
+        <div id="signupForm" class="auth-form" style="display: none;">
+          <h2>Create Your Account</h2>
+          <form id="signupFormElement">
+            <div class="form-group">
+              <label for="signupUsername">Username</label>
+              <input type="text" id="signupUsername" required>
+            </div>
+            <div class="form-group">
+              <label for="signupEmail">Email</label>
+              <input type="email" id="signupEmail" required>
+            </div>
+            <div class="form-group">
+              <label for="signupPassword">Password</label>
+              <input type="password" id="signupPassword" required>
+            </div>
+            <div class="form-group">
+              <label for="signupConfirmPassword">Confirm Password</label>
+              <input type="password" id="signupConfirmPassword" required>
+            </div>
+            <div class="error-message" id="signupError"></div>
+            <button type="submit" class="auth-btn">Sign Up</button>
+            <div class="auth-toggle">
+              Already have an account? <a href="#" id="showLogin">Login</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
   <div id="menu">
     <header>
       <h1>Lyrics Presenter</h1>
+      <div id="userInfo"></div>
     </header>
     <main>
       <div class="search-container">
@@ -693,25 +883,187 @@
     </main>
   </div>
   
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth-compat.js"></script>
+  
   <script>
-    let songListDiv = document.getElementById('songList');
-    let searchInput = document.getElementById('search');
-    let menuDiv = document.getElementById('menu');
-    let presDiv = document.getElementById('presentation');
-    let slideContainer = document.getElementById('slideContainer');
-    let slideTitle = document.getElementById('slideTitle');
-    let slideContent = document.getElementById('slideContent');
-    let backBtn = document.getElementById('backBtn');
-    let prevBtn = document.getElementById('prevBtn');
-    let nextBtn = document.getElementById('nextBtn');
-    let decreaseFontBtn = document.getElementById('decreaseFont');
-    let resetFontBtn = document.getElementById('resetFont');
-    let increaseFontBtn = document.getElementById('increaseFont');
+    // Initialize Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyDMSPQN0kUFsZe9km7g7TCB7g39T9XkGGg",
+      authDomain: "presenter-488c6.firebaseapp.com",
+      projectId: "presenter-488c6",
+      storageBucket: "presenter-488c6.firebasestorage.app",
+      messagingSenderId: "758661053627",
+      appId: "1:758661053627:web:1c08b776ba5fd248b7fd9e"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    // DOM Elements
+    const songListDiv = document.getElementById('songList');
+    const searchInput = document.getElementById('search');
+    const menuDiv = document.getElementById('menu');
+    const presDiv = document.getElementById('presentation');
+    const slideContainer = document.getElementById('slideContainer');
+    const slideTitle = document.getElementById('slideTitle');
+    const slideContent = document.getElementById('slideContent');
+    const backBtn = document.getElementById('backBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const decreaseFontBtn = document.getElementById('decreaseFont');
+    const resetFontBtn = document.getElementById('resetFont');
+    const increaseFontBtn = document.getElementById('increaseFont');
+    const loadingIndicator = document.getElementById('loadingIndicator');
+    const authContainer = document.getElementById('authContainer');
+    const loginForm = document.getElementById('loginForm');
+    const signupForm = document.getElementById('signupForm');
+    const loginFormElement = document.getElementById('loginFormElement');
+    const signupFormElement = document.getElementById('signupFormElement');
+    const loginError = document.getElementById('loginError');
+    const signupError = document.getElementById('signupError');
+    const userInfo = document.getElementById('userInfo');
+
+    // App State
     let songs = [];
     let currentSong = null;
     let currentSlide = 0;
-    let currentFontSize = 100; // Default font size in percentage
+    let currentFontSize = 100;
+    let currentUser = null;
 
+    // Authentication Functions
+    function signUp(email, password, username) {
+      return auth.createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          // Update user profile with display name
+          return userCredential.user.updateProfile({
+            displayName: username
+          });
+        });
+    }
+
+    function logIn(email, password) {
+      return auth.signInWithEmailAndPassword(email, password);
+    }
+
+    function logOut() {
+      return auth.signOut();
+    }
+
+    // Auth State Observer
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        // User is signed in
+        currentUser = user;
+        hideAuthContainer();
+        updateMenuForUser(user);
+        loadSongs();
+      } else {
+        // User is signed out
+        currentUser = null;
+        showAuthContainer();
+        showLoginForm();
+      }
+    });
+
+    // UI Functions
+    function showAuthContainer() {
+      authContainer.style.display = 'flex';
+      menuDiv.style.display = 'none';
+      presDiv.style.display = 'none';
+    }
+
+    function hideAuthContainer() {
+      authContainer.style.display = 'none';
+      menuDiv.style.display = 'block';
+    }
+
+    function showLoginForm() {
+      loginForm.style.display = 'block';
+      signupForm.style.display = 'none';
+    }
+
+    function showSignupForm() {
+      loginForm.style.display = 'none';
+      signupForm.style.display = 'block';
+    }
+
+    function updateMenuForUser(user) {
+      if (userInfo) {
+        userInfo.innerHTML = `
+          <div class="user-info">
+            <span class="username">${user.displayName || user.email}</span>
+            <button id="logoutBtn" class="logout-btn">Logout</button>
+          </div>
+        `;
+        
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+          logOut().then(() => {
+            console.log('User logged out');
+          }).catch(error => {
+            console.error('Logout error:', error);
+          });
+        });
+      }
+    }
+
+    // Setup Auth Event Listeners
+    function setupAuthEventListeners() {
+      // Login form submission
+      loginFormElement.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+        
+        logIn(email, password)
+          .then(() => {
+            loginError.textContent = '';
+          })
+          .catch(error => {
+            loginError.textContent = error.message;
+          });
+      });
+      
+      // Signup form submission
+      signupFormElement.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const username = document.getElementById('signupUsername').value;
+        const email = document.getElementById('signupEmail').value;
+        const password = document.getElementById('signupPassword').value;
+        const confirmPassword = document.getElementById('signupConfirmPassword').value;
+        
+        // Clear previous errors
+        signupError.textContent = '';
+        
+        // Validate passwords match
+        if (password !== confirmPassword) {
+          signupError.textContent = 'Passwords do not match';
+          return;
+        }
+        
+        signUp(email, password, username)
+          .then(() => {
+            signupError.textContent = '';
+          })
+          .catch(error => {
+            signupError.textContent = error.message;
+          });
+      });
+      
+      // Toggle between login and signup
+      document.getElementById('showSignup').addEventListener('click', (e) => {
+        e.preventDefault();
+        showSignupForm();
+      });
+      
+      document.getElementById('showLogin').addEventListener('click', (e) => {
+        e.preventDefault();
+        showLoginForm();
+      });
+    }
+
+    // Song Functions
     async function loadSongs() {
       try {
         let res = await fetch('songs/index.json');
@@ -746,8 +1098,10 @@
       ));
     });
 
+    // Presentation Functions
     async function startPresentation(file) {
       try {
+        loadingIndicator.style.display = 'block';
         let res = await fetch('songs/' + file);
         currentSong = await res.json();
         currentSlide = 0;
@@ -766,6 +1120,8 @@
       } catch (error) {
         console.error('Error loading song:', error);
         alert('Error loading song. Please try again.');
+      } finally {
+        loadingIndicator.style.display = 'none';
       }
     }
 
@@ -836,7 +1192,10 @@
       presDiv.classList.remove('active');
       menuDiv.style.display = 'block';
     };
-    
+
+    nextBtn.onclick = nextSlide;
+    prevBtn.onclick = prevSlide;
+
     // Font size control event listeners
     decreaseFontBtn.onclick = decreaseFontSize;
     resetFontBtn.onclick = resetFontSize;
@@ -869,16 +1228,16 @@
     // Touch gesture support
     let touchStartX = 0;
     let touchEndX = 0;
-    
+
     slideContainer.addEventListener('touchstart', e => {
       touchStartX = e.changedTouches[0].screenX;
     }, { passive: true });
-    
+
     slideContainer.addEventListener('touchend', e => {
       touchEndX = e.changedTouches[0].screenX;
       handleSwipe();
     }, { passive: true });
-    
+
     function handleSwipe() {
       const swipeThreshold = 50;
       if (touchEndX < touchStartX - swipeThreshold) {
@@ -895,8 +1254,10 @@
       }
     }
 
-    // Initialize
-    loadSongs();
+    // Initialize app
+    document.addEventListener('DOMContentLoaded', () => {
+      setupAuthEventListeners();
+    });
   </script>
 </body>
 </html>
