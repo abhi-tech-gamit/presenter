@@ -1,73 +1,471 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Lyrics Presenter for live performances">
-  <title>Lyrics Presenter</title>
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    /* Fallback font in case Google Fonts fails */
-    body {
-      font-family: 'Roboto', sans-serif;
-    }
-  </style>
-</head>
-<body>
-  <div id="menu">
-    <header>
-      <h1>Lyrics Presenter</h1>
-    </header>
-    <main>
-      <div class="search-container">
-        <input type="text" id="search" placeholder="Search songs..." aria-label="Search songs">
-        <div id="loadingIndicator" class="loading" style="display: none;"></div>
-      </div>
-      <div id="songList" role="list"></div>
-    </main>
-  </div>
+/* Base Styles */
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+  color: #fff;
+  line-height: 1.6;
+  overflow: hidden;
+}
+
+/* Menu Container */
+#menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  padding: 30px;
+  overflow-y: auto;
+  z-index: 50;
+  background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+}
+
+#menu header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+#menu h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  background: linear-gradient(90deg, #ff9a9e 0%, #fad0c4 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin: 0;
+}
+
+.search-container {
+  position: relative;
+  max-width: 600px;
+  margin: 0 auto 30px;
+}
+
+#search {
+  width: 100%;
+  padding: 15px 50px 15px 20px;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  font-size: 16px;
+  box-sizing: border-box;
+  font-weight: 500;
+  backdrop-filter: blur(5px);
+}
+
+#search:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+#loadingIndicator {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+#songList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+#songList div {
+  cursor: pointer;
+  padding: 20px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+#songList div::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+}
+
+#songList div:hover::before {
+  transform: translateX(0);
+}
+
+#songList div:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+#songList .song-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #fff;
+}
+
+#songList .song-author {
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+/* Presentation Container - Fixed Layout */
+#presentation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: none;
+  flex-direction: column;
+  z-index: 100;
+  background: #000;
+}
+
+#presentation.active {
+  display: flex;
+}
+
+/* Back Button - Fixed Position */
+#backBtn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 102;
+  background: rgba(255, 70, 85, 0.2);
+  border: 1px solid rgba(255, 70, 85, 0.4);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  min-height: 48px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+#backBtn:hover {
+  background: rgba(255, 70, 85, 0.3);
+  border-color: rgba(255, 70, 85, 0.6);
+  transform: translateY(-2px);
+}
+
+/* Slide Container - Scrollable Content Area */
+#slideContainer {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: clamp(20px, 5vw, 60px);
+  position: relative;
+  scrollbar-width: thin; /* Firefox */
+}
+
+/* Custom Scrollbar for Webkit Browsers */
+#slideContainer::-webkit-scrollbar {
+  width: 8px;
+}
+
+#slideContainer::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+#slideContainer::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+#slideContainer::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Slide Content */
+.slide-wrapper {
+  max-width: 90%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.8s ease;
+}
+
+.slide-title {
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-weight: 800;
+  margin-bottom: 1rem;
+  background: linear-gradient(90deg, #ff9a9e 0%, #fad0c4 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+.slide-content {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 700;
+  line-height: 1.7;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  text-align: center;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  max-width: 100%;
+}
+
+/* Navigation Container - Fixed at Bottom */
+.nav-buttons {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 20px;
+  z-index: 101;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Navigation Buttons */
+#prevBtn, #nextBtn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  padding: 15px 25px;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 16px;
+  font-weight: 600;
+  min-height: 48px;
+  min-width: 120px;
+  flex: 1;
+}
+
+#prevBtn:hover, #nextBtn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+/* Loading Animation */
+.loading {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(255,255,255,.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 1s ease-in-out infinite;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  #menu {
+    padding: 20px;
+  }
   
-  <div id="presentation" style="display:none;" aria-hidden="true">
-    <button id="backBtn" aria-label="Back to song list">Back</button>
-    <main>
-      <div id="slideContainer" role="document" aria-live="polite"></div>
-      <nav class="nav-buttons" aria-label="Slide navigation">
-        <button id="prevBtn" aria-label="Previous slide">Previous</button>
-        <button id="nextBtn" aria-label="Next slide">Next</button>
-      </nav>
-    </main>
-  </div>
+  #menu h1 {
+    font-size: 2rem;
+  }
   
-  <script src="js/app.js"></script>
-  <script>
-    // Touch gesture support
-    document.addEventListener('DOMContentLoaded', () => {
-      const slideContainer = document.getElementById('slideContainer');
-      let touchStartX = 0;
-      let touchEndX = 0;
-      
-      slideContainer.addEventListener('touchstart', e => {
-        touchStartX = e.changedTouches[0].screenX;
-      });
-      
-      slideContainer.addEventListener('touchend', e => {
-        touchEndX = e.changedTouches[0].screenX;
-        handleSwipe();
-      });
-      
-      function handleSwipe() {
-        const swipeThreshold = 50;
-        if (touchEndX < touchStartX - swipeThreshold) {
-          document.getElementById('nextBtn').click();
-        }
-        if (touchEndX > touchStartX + swipeThreshold) {
-          document.getElementById('prevBtn').click();
-        }
-      }
-    });
-  </script>
-</body>
-</html>
+  #songList {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  #slideContainer {
+    padding: 20px;
+  }
+  
+  .slide-content {
+    font-size: 1.8rem;
+  }
+  
+  .slide-title {
+    font-size: 1.2em;
+  }
+  
+  .nav-buttons {
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px;
+  }
+  
+  #prevBtn, #nextBtn {
+    width: 100%;
+    max-width: 200px;
+  }
+  
+  #backBtn {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  #menu {
+    padding: 15px;
+  }
+  
+  #menu h1 {
+    font-size: 1.8rem;
+  }
+  
+  #slideContainer {
+    padding: 15px;
+  }
+  
+  .slide-content {
+    font-size: 1.5rem;
+  }
+  
+  .slide-title {
+    font-size: 1.1em;
+  }
+  
+  .nav-buttons {
+    padding: 10px;
+  }
+  
+  #search {
+    padding: 12px 45px 12px 15px;
+  }
+}
+
+/* Dark/Light Mode Support */
+@media (prefers-color-scheme: light) {
+  body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 50%, #d9e2ec 100%);
+    color: #333;
+  }
+  
+  #menu {
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 50%, #d9e2ec 100%);
+  }
+  
+  #menu h1 {
+    background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  
+  #songList div {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: rgba(0, 0, 0, 0.1);
+  }
+  
+  #songList div:hover {
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+  
+  #songList .song-title {
+    color: #333;
+  }
+  
+  #songList .song-author {
+    color: #666;
+  }
+  
+  #search {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(0, 0, 0, 0.1);
+    color: #333;
+  }
+  
+  #search:focus {
+    border-color: rgba(0, 0, 0, 0.3);
+    background: #fff;
+  }
+  
+  #slideContainer {
+    background: #fff;
+  }
+  
+  .slide-title {
+    background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  
+  .slide-content {
+    text-shadow: none;
+    color: #333;
+  }
+  
+  #backBtn {
+    background: rgba(255, 70, 85, 0.1);
+    border-color: rgba(255, 70, 85, 0.2);
+    color: #333;
+  }
+  
+  #backBtn:hover {
+    background: rgba(255, 70, 85, 0.2);
+    border-color: rgba(255, 70, 85, 0.3);
+  }
+  
+  #prevBtn, #nextBtn {
+    background: rgba(255, 255, 255, 0.7);
+    border-color: rgba(0, 0, 0, 0.1);
+    color: #333;
+  }
+  
+  #prevBtn:hover, #nextBtn:hover {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(0, 0, 0, 0.2);
+  }
+  
+  .nav-buttons {
+    background: rgba(255, 255, 255, 0.8);
+    border-top-color: rgba(0, 0, 0, 0.1);
+  }
+  
+  #slideContainer::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+  }
+  
+  #slideContainer::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+  }
+  
+  #slideContainer::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3);
+  }
+}
