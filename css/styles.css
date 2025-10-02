@@ -1,216 +1,163 @@
-/* Base Styles */
-body {
-  margin: 0;
-  font-family: sans-serif;
-  background: #000;
-  color: #fff;
-  line-height: 1.6;
+/* Fixed Presentation Container */
+#presentationWrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: none;
+  flex-direction: column;
+  z-index: 100;
 }
 
-#menu {
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
+#presentationWrapper.active {
+  display: flex;
 }
 
-#songList div {
-  cursor: pointer;
-  padding: 15px;
-  border-bottom: 1px solid #555;
-  transition: background-color 0.3s;
-}
-
-#songList div:hover {
-  background-color: #222;
-}
-
+/* Fixed Slide Container */
 #slideContainer {
-  text-align: center;
-  font-size: clamp(1.5rem, 4vw, 2.5rem);
-  padding: clamp(20px, 5vw, 50px);
-  line-height: 1.6;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  min-height: 50vh;
+  flex: 1;
+  overflow: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: clamp(20px, 5vw, 40px);
+  background: #000;
+  position: relative;
+}
+
+/* Slide Content Wrapper */
+.slide-wrapper {
+  max-width: 90%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1.5rem;
+  min-height: 100%;
 }
 
 .slide-title {
-  font-size: 1.2em;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-  color: #ffd700;
+  font-size: 1.3em;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  background: linear-gradient(90deg, #ff9a9e 0%, #fad0c4 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  letter-spacing: 1px;
+  text-align: center;
 }
 
 .slide-content {
-  max-width: 90%;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 700;
+  line-height: 1.7;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  text-align: center;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  max-width: 100%;
 }
 
-button {
-  padding: 12px 20px;
-  margin: 5px;
-  border: none;
-  border-radius: 5px;
-  background: #333;
-  color: #fff;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-size: 16px;
-  min-height: 48px;
-}
-
-button:hover {
-  background: #555;
-}
-
-/* Transparent background for navigation buttons */
-#prevBtn, #nextBtn {
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-}
-
-#prevBtn:hover, #nextBtn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.5);
-  transform: translateY(-2px);
-}
-
-input {
-  padding: 12px;
-  width: 100%;
-  margin-bottom: 15px;
-  border-radius: 5px;
-  border: 1px solid #555;
-  background: #222;
-  color: #fff;
-  font-size: 16px;
-  box-sizing: border-box;
+/* Fixed Navigation Container */
+.nav-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 20px;
+  z-index: 101;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .nav-buttons {
   display: flex;
   justify-content: center;
-  gap: 10px;
-  margin-top: 20px;
+  gap: 15px;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
-/* Responsive Adjustments */
+/* Menu Container */
+#menu {
+  padding: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  overflow-y: auto;
+  height: 100vh;
+  background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+}
+
+/* Body Styles */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #000;
+  color: #fff;
+  line-height: 1.6;
+  overflow: hidden;
+}
+
+/* Hide scrollbar but keep functionality */
+#slideContainer::-webkit-scrollbar {
+  width: 8px;
+}
+
+#slideContainer::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+#slideContainer::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+#slideContainer::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Ensure menu doesn't interfere */
+#menu {
+  z-index: 50;
+}
+
+/* Responsive adjustments */
 @media (max-width: 768px) {
-  #menu {
+  .nav-container {
     padding: 15px;
-  }
-  
-  #songList div {
-    padding: 12px;
-    font-size: 16px;
-  }
-  
-  button {
-    padding: 15px;
-    width: 100%;
-    margin: 8px 0;
   }
   
   .nav-buttons {
     flex-direction: column;
+    gap: 10px;
   }
   
-  #slideContainer {
-    font-size: 1.8rem;
-    padding: 20px;
-  }
-  
-  .slide-title {
-    font-size: 1.1em;
-  }
-  
-  /* Adjust nav buttons for mobile */
   #prevBtn, #nextBtn {
     width: 100%;
-    margin: 5px 0;
+    max-width: 200px;
+  }
+  
+  .slide-content {
+    font-size: 1.8rem;
   }
 }
 
 @media (max-width: 480px) {
-  #slideContainer {
+  .nav-container {
+    padding: 10px;
+  }
+  
+  .slide-content {
     font-size: 1.5rem;
-    padding: 15px;
-    min-height: 40vh;
-  }
-  
-  #backBtn {
-    margin-bottom: 15px;
-  }
-  
-  h1 {
-    font-size: 1.8rem;
   }
   
   .slide-title {
-    font-size: 1em;
-  }
-}
-
-/* Loading Animation */
-.loading {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  border: 3px solid rgba(255,255,255,.3);
-  border-radius: 50%;
-  border-top-color: #fff;
-  animation: spin 1s ease-in-out infinite;
-  margin-left: 10px;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-/* Dark/Light Mode Support */
-@media (prefers-color-scheme: light) {
-  body {
-    background: #fff;
-    color: #000;
-  }
-  
-  #songList div {
-    border-bottom-color: #ccc;
-  }
-  
-  button, input {
-    background: #f0f0f0;
-    color: #000;
-    border-color: #ccc;
-  }
-  
-  button:hover {
-    background: #e0e0e0;
-  }
-  
-  #songList div:hover {
-    background-color: #f5f5f5;
-  }
-  
-  .slide-title {
-    color: #b8860b;
-  }
-  
-  /* Transparent nav buttons in light mode */
-  #prevBtn, #nextBtn {
-    background: transparent;
-    border-color: rgba(0, 0, 0, 0.2);
-    color: #000;
-  }
-  
-  #prevBtn:hover, #nextBtn:hover {
-    background: rgba(0, 0, 0, 0.05);
-    border-color: rgba(0, 0, 0, 0.3);
+    font-size: 1.1em;
   }
 }
