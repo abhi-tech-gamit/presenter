@@ -17,7 +17,8 @@ const searchInput = document.getElementById('search');
 const menuDiv = document.getElementById('menu');
 const presDiv = document.getElementById('presentation');
 const slideContainer = document.getElementById('slideContainer');
-const slideContent = document.getElementById('slideContent');
+const slideTitle = document.getElementById('slideTitle');
+const slideText = document.getElementById('slideText');
 const backBtn = document.getElementById('backBtn');
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
@@ -230,8 +231,12 @@ function showSlide() {
     return;
   }
   
-  // Update content
-  slideContent.textContent = currentSong.slides[currentSlide].lyrics;
+  // Update title
+  slideTitle.textContent = currentSong.slides[currentSlide].title;
+  
+  // Update lyrics with proper formatting
+  const lyrics = currentSong.slides[currentSlide].lyrics;
+  slideText.innerHTML = lyrics.replace(/\n/g, '<br>');
 }
 
 function nextSlide() {
