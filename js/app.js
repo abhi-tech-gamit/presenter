@@ -22,14 +22,67 @@ const slideText = document.getElementById('slideText');
 const backBtn = document.getElementById('backBtn');
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
+const decreaseFontBtn = document.getElementById('decreaseFont');
+const resetFontBtn = document.getElementById('resetFont');
+const increaseFontBtn = document.getElementById('increaseFont');
 const loadingIndicator = document.getElementById('loadingIndicator');
 const userInfo = document.getElementById('userInfo');
+const themeToggle = document.getElementById('themeToggle');
+const themeIcon = document.querySelector('.theme-icon');
 
 // App State
 let songs = [];
 let currentSong = null;
 let currentSlide = 0;
 let currentUser = null;
+let currentTheme = localStorage.getItem('theme') || 'dark';
+let currentFontSize = 100; // Default font size in percentage
+
+// Apply saved theme on load
+function applyTheme(theme) {
+  if (theme === 'blue') {
+    document.body.classList.add('blue-theme');
+    themeIcon.textContent = '🌞'; // Sun icon for blue theme
+  } else {
+    document.body.classList.remove('blue-theme');
+    themeIcon.textContent = '🌙'; // Moon icon for dark theme
+  }
+  currentTheme = theme;
+  localStorage.setItem('theme', theme);
+}
+
+// Toggle theme function
+function toggleTheme() {
+  if (currentTheme === 'dark') {
+    applyTheme('blue');
+  } else {
+    applyTheme('dark');
+  }
+}
+
+// Font size adjustment functions
+function updateFontSize() {
+  slideText.style.fontSize = `${currentFontSize}%`;
+}
+
+function decreaseFontSize() {
+  if (currentFontSize > 50) { // Minimum 50% of original size
+    currentFontSize -= 10;
+    updateFontSize();
+  }
+}
+
+function increaseFontSize() {
+  if (currentFontSize < 200) { // Maximum 200% of original size
+    currentFontSize += 10;
+    updateFontSize();
+  }
+}
+
+function resetFontSize() {
+  currentFontSize = 100;
+  updateFontSize();
+}
 
 // Authentication Check and User State
 auth.onAuthStateChanged(user => {
@@ -38,6 +91,8 @@ auth.onAuthStateChanged(user => {
     currentUser = user;
     updateMenuForUser(user);
     loadSongs();
+    // Apply saved theme
+    applyTheme(currentTheme);
   } else {
     // User is signed out, redirect to login page
     window.location.href = 'login.html';
@@ -108,6 +163,10 @@ async function startPresentation(file) {
     currentSong = await res.json();
     currentSlide = 0;
     
+    // Reset font size to default when starting a new presentation
+    currentFontSize = 100;
+    updateFontSize();
+    
     // Hide menu and show presentation
     menuDiv.style.display = 'none';
     presDiv.style.display = 'block';
@@ -133,6 +192,9 @@ function showSlide() {
   // Update lyrics with proper formatting
   const lyrics = currentSong.slides[currentSlide].lyrics;
   slideText.innerHTML = lyrics.replace(/\n/g, '<br>');
+  
+  // Apply current font size
+  updateFontSize();
 }
 
 function nextSlide() {
@@ -158,6 +220,14 @@ backBtn.onclick = () => {
 nextBtn.onclick = nextSlide;
 prevBtn.onclick = prevSlide;
 
+// Font size control event listeners
+decreaseFontBtn.onclick = decreaseFontSize;
+resetFontBtn.onclick = resetFontSize;
+increaseFontBtn.onclick = increaseFontSize;
+
+// Theme toggle event listener
+themeToggle.addEventListener('click', toggleTheme);
+
 // Keyboard navigation
 document.addEventListener('keydown', (e) => {
   if (!currentSong) return; 
@@ -170,5 +240,20 @@ document.addEventListener('keydown', (e) => {
     prevSlide();
   } else if (e.key === 'Escape') {
     backBtn.onclick();
+  } else if (e.key === '+' || e.key === '=') {
+    // Plus key to increase font size
+    e.preventDefault();
+    increaseFontSize();
+  } else if (e.key === '-' || e.key === '_') {
+    // Minus key to decrease font size
+    e.preventDefault();
+    decreaseFontSize();
+  } else if (e.key === '0') {
+    // Zero key to reset font size
+    e.preventDefault();
+    resetFontSize();
+  } else if (e.key === 't' || e.key === 'T') {
+    // Press 'T' to toggle theme
+    toggleTheme();
   }
 });
