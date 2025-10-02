@@ -11,6 +11,7 @@ body {
 /* Blue Theme */
 body.blue-theme {
   background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+  color: #fff; /* Ensure text stays white in blue theme */
 }
 
 /* Header Controls */
@@ -78,6 +79,7 @@ body.blue-theme #menu {
   padding: 15px;
   border-bottom: 1px solid #555;
   transition: background-color 0.3s;
+  color: #fff; /* Ensure text is white */
 }
 
 body.blue-theme #songList div {
@@ -85,6 +87,7 @@ body.blue-theme #songList div {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 10px;
   margin-bottom: 10px;
+  color: #fff; /* Ensure text is white in blue theme */
 }
 
 #songList div:hover {
@@ -127,6 +130,7 @@ body.blue-theme #songList div:hover {
 body.blue-theme #search {
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff; /* Ensure text is white */
 }
 
 body.blue-theme #search:focus {
@@ -194,6 +198,7 @@ button {
 body.blue-theme button {
   background: linear-gradient(135deg, #333 0%, #444 100%);
   border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff; /* Ensure text is white */
 }
 
 button:hover {
@@ -281,10 +286,12 @@ body.blue-theme .slide-content {
   margin: 0;
   position: relative;
   z-index: 2;
+  color: #fff; /* Ensure text is white */
 }
 
 body.blue-theme #slideText {
   text-shadow: none;
+  color: #fff; /* Ensure text is white in blue theme */
 }
 
 /* User Info */
@@ -298,6 +305,7 @@ body.blue-theme #slideText {
   margin-bottom: 20px;
   border: 1px solid #555;
   transition: all 0.3s ease;
+  color: #fff; /* Ensure text is white */
 }
 
 body.blue-theme .user-info {
@@ -306,10 +314,12 @@ body.blue-theme .user-info {
   border-radius: 30px;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  color: #fff; /* Ensure text is white in blue theme */
 }
 
 .username {
   font-weight: bold;
+  color: #fff; /* Ensure text is white */
 }
 
 .logout-btn {
@@ -330,7 +340,7 @@ body.blue-theme .user-info {
 body.blue-theme .logout-btn {
   background: rgba(0, 0, 0, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #333;
+  color: #fff; /* Ensure text is white */
 }
 
 body.blue-theme .logout-btn:hover {
@@ -398,81 +408,4 @@ body.blue-theme .logout-btn:hover {
   }
   
   #slideContainer {
-    padding: 100px 20px 20px;
-  }
-  
-  .slide-content {
-    padding: 25px 30px;
-    max-width: 95%;
-  }
-  
-  #slideText {
-    font-size: 1.6rem;
-  }
-}
-
-@media (max-width: 480px) {
-  #slideContainer {
-    padding: 80px 15px 15px;
-  }
-  
-  .slide-content {
-    padding: 20px 25px;
-    max-width: 98%;
-    border-radius: 15px;
-  }
-  
-  #slideText {
-    font-size: 1.4rem;
-  }
-  
-  .theme-toggle {
-    width: 50px;
-    height: 50px;
-  }
-  
-  .theme-icon {
-    font-size: 24px;
-  }
-}
-
-/* Dark/Light Mode Support */
-@media (prefers-color-scheme: light) {
-  body {
-    background: #fff;
-    color: #000;
-  }
-  
-  #songList div {
-    border-bottom-color: #ccc;
-  }
-  
-  button, input {
-    background: #f0f0f0;
-    color: #000;
-    border-color: #ccc;
-  }
-  
-  button:hover {
-    background: #e0e0e0;
-  }
-  
-  #songList div:hover {
-    background-color: #f5f5f5;
-  }
-  
-  .user-info {
-    background: #f0f0f0;
-    border-color: #ccc;
-  }
-  
-  .logout-btn {
-    background: #e0e0e0;
-    border-color: #ccc;
-    color: #000;
-  }
-  
-  .logout-btn:hover {
-    background: #d0d0d0;
-  }
-}
+    padding: 100px
