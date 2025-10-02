@@ -277,8 +277,9 @@ body.blue-theme .slide-content {
 }
 
 #slideText {
-  font-size: clamp(1.8rem, 4vw, 2.8rem);
-  line-height: 1.8;
+  /* Increased font size for lyrics */
+  font-size: clamp(2.5rem, 5vw, 4rem); /* Changed from clamp(1.8rem, 4vw, 2.8rem) */
+  line-height: 1.5; /* Adjusted line height for larger text */
   text-align: center;
   text-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
   max-width: 100%;
@@ -444,5 +445,10 @@ body.blue-theme .font-controls {
   
   #slideContainer {
     padding: 100px;
+  }
+  
+  /* Adjusted font size for mobile */
+  #slideText {
+    font-size: clamp(2rem, 6vw, 3.5rem);
   }
 }
