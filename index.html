@@ -211,14 +211,44 @@
       overflow: hidden;
     }
 
+    /* Fixed Title Area */
+    .slide-title-area {
+      position: fixed;
+      top: 80px;
+      left: 0;
+      right: 0;
+      z-index: 101;
+      text-align: center;
+      padding: 20px;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+      pointer-events: none;
+    }
+
+    .slide-title-area h2 {
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      font-weight: 800;
+      background: linear-gradient(90deg, #74b9ff 0%, #0984e3 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: 1px;
+      margin: 0;
+      animation: titleFadeIn 0.5s ease;
+    }
+
+    @keyframes titleFadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     /* Slide Container - Scrollable Content Area */
     #slideContainer {
       flex: 1;
       overflow-y: auto;
       display: flex;
       justify-content: center;
-      align-items: center;
-      padding: clamp(20px, 5vw, 60px);
+      align-items: flex-start;
+      padding: clamp(120px, 15vw, 180px) clamp(20px, 5vw, 60px) clamp(20px, 5vw, 60px);
       position: relative;
       scrollbar-width: thin; /* Firefox */
     }
@@ -249,20 +279,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       animation: fadeIn 0.8s ease;
-    }
-
-    #slideContainer h2 {
-      font-size: clamp(1.5rem, 4vw, 2.5rem);
-      font-weight: 800;
-      margin-bottom: 1rem;
-      background: linear-gradient(90deg, #74b9ff 0%, #0984e3 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      letter-spacing: 1px;
-      text-align: center;
     }
 
     /* Enhanced Text Background Box */
@@ -400,16 +418,21 @@
         gap: 15px;
       }
       
+      .slide-title-area {
+        top: 70px;
+        padding: 15px;
+      }
+      
+      .slide-title-area h2 {
+        font-size: 1.2em;
+      }
+      
       #slideContainer {
-        padding: 20px;
+        padding: 100px 20px 20px;
       }
       
       #slideContainer p {
         font-size: 1.8rem;
-      }
-      
-      #slideContainer h2 {
-        font-size: 1.2em;
       }
       
       .text-background {
@@ -453,16 +476,21 @@
         font-size: 1.8rem;
       }
       
+      .slide-title-area {
+        top: 60px;
+        padding: 10px;
+      }
+      
+      .slide-title-area h2 {
+        font-size: 1.1em;
+      }
+      
       #slideContainer {
-        padding: 15px;
+        padding: 80px 15px 15px;
       }
       
       #slideContainer p {
         font-size: 1.5rem;
-      }
-      
-      #slideContainer h2 {
-        font-size: 1.1em;
       }
       
       .text-background {
@@ -542,7 +570,7 @@
         background: #fff;
       }
       
-      #slideContainer h2 {
+      .slide-title-area h2 {
         background: linear-gradient(90deg, #0984e3 0%, #74b9ff 100%);
         -webkit-background-clip: text;
         background-clip: text;
@@ -644,8 +672,19 @@
       <button class="font-btn" id="increaseFont" aria-label="Increase font size">+</button>
     </div>
     
+    <!-- Fixed Title Area -->
+    <div class="slide-title-area">
+      <h2 id="slideTitle">Slide Title</h2>
+    </div>
+    
     <main>
-      <div id="slideContainer" role="document" aria-live="polite"></div>
+      <div id="slideContainer" role="document" aria-live="polite">
+        <div class="slide-wrapper">
+          <div class="text-background">
+            <p id="slideContent">Slide content will appear here</p>
+          </div>
+        </div>
+      </div>
       
       <!-- Side Navigation Buttons -->
       <button class="side-nav" id="prevBtn" aria-label="Previous slide">←</button>
@@ -659,6 +698,8 @@
     let menuDiv = document.getElementById('menu');
     let presDiv = document.getElementById('presentation');
     let slideContainer = document.getElementById('slideContainer');
+    let slideTitle = document.getElementById('slideTitle');
+    let slideContent = document.getElementById('slideContent');
     let backBtn = document.getElementById('backBtn');
     let prevBtn = document.getElementById('prevBtn');
     let nextBtn = document.getElementById('nextBtn');
@@ -732,23 +773,21 @@
         return;
       }
       
-      slideContainer.style.opacity = 0;
+      // Update title with fade animation
+      slideTitle.style.opacity = '0';
+      slideContent.style.opacity = '0';
       
       setTimeout(() => {
-        // Create slide wrapper with enhanced text background
-        slideContainer.innerHTML = `
-          <div class="slide-wrapper">
-            <h2>${currentSong.slides[currentSlide].title}</h2>
-            <div class="text-background">
-              <p>${currentSong.slides[currentSlide].lyrics.replace(/\n/g,'<br>')}</p>
-            </div>
-          </div>
-        `;
+        // Update title and content
+        slideTitle.textContent = currentSong.slides[currentSlide].title;
+        slideContent.innerHTML = currentSong.slides[currentSlide].lyrics.replace(/\n/g,'<br>');
         
         // Apply current font size
         updateFontSize();
         
-        slideContainer.style.opacity = 1;
+        // Fade in both title and content
+        slideTitle.style.opacity = '1';
+        slideContent.style.opacity = '1';
       }, 200);
     }
 
@@ -768,10 +807,7 @@
 
     // Font size adjustment functions
     function updateFontSize() {
-      const lyricsElement = slideContainer.querySelector('p');
-      if (lyricsElement) {
-        lyricsElement.style.fontSize = `${currentFontSize}%`;
-      }
+      slideContent.style.fontSize = `${currentFontSize}%`;
     }
 
     function decreaseFontSize() {
