@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Lyrics Presenter for live performances">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Lyrics Presenter for live performances"/>
   <title>Lyrics Presenter</title>
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
 </head>
 <body>
   <div id="menu">
@@ -16,47 +16,70 @@
       <h1>Lyrics Presenter</h1>
       <div class="header-controls">
         <div id="userInfo"></div>
-        <button id="projectBtn" class="project-btn" aria-label="Project to screen">🎥 Project</button>
+        <div class="project-controls">
+          <button id="projectBtn" class="project-btn" aria-label="Project to screen">🎥 Project</button>
+          <button id="blackScreenBtn" class="black-btn" aria-label="Toggle black screen">🖤 Black</button>
+          <button id="presenterToggle" class="presenter-btn" aria-pressed="false" aria-label="Toggle presenter mode">👁 Presenter: OFF</button>
+        </div>
         <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
           <span class="theme-icon">🌙</span>
         </button>
       </div>
     </header>
+
     <main>
       <div class="search-container">
-        <input type="text" id="search" placeholder="Search songs..." aria-label="Search songs">
-        <div id="loadingIndicator" class="loading" style="display: none;"></div>
+        <input type="text" id="search" placeholder="Search songs..." aria-label="Search songs"/>
+        <div id="loadingIndicator" class="loading" style="display:none;"></div>
       </div>
       <div id="songList" role="list"></div>
     </main>
   </div>
-  
+
+  <!-- Presentation View -->
   <div id="presentation" style="display:none;" aria-hidden="true">
+    <!-- Nav buttons -->
     <div class="nav-buttons">
       <button id="backBtn">Back</button>
       <button id="prevBtn">Previous</button>
       <button id="nextBtn">Next</button>
     </div>
-    
+
+    <!-- Font size controls -->
     <div class="font-controls">
       <button class="font-btn" id="decreaseFont" aria-label="Decrease font size">−</button>
       <button class="font-btn" id="resetFont" aria-label="Reset font size">A</button>
       <button class="font-btn" id="increaseFont" aria-label="Increase font size">+</button>
     </div>
-    
+
+    <!-- Title -->
     <div class="slide-title-area">
       <h2 id="slideTitle">Slide Title</h2>
     </div>
-    
+
+    <!-- Safe bordered lyrics area -->
     <div id="slideContainer" role="document" aria-live="polite">
       <div class="slide-content">
-        <p id="slideText">Slide content will appear here</p>
+        <p id="slideText" class="current-lyrics">Slide content will appear here</p>
+
+        <!-- Presenter preview (next lyrics) - shown only when Presenter Mode is ON -->
+        <div id="nextPreview" class="next-preview" aria-hidden="true" style="display:none;">
+          <div class="divider"></div>
+          <p id="nextSlideLabel" class="next-label">Next</p>
+          <p id="nextSlideText" class="next-lyrics">—</p>
+        </div>
       </div>
     </div>
+
+    <!-- Presenter black-screen indicator -->
+    <div id="blackBadge" class="black-badge" style="display:none;">Projector is BLACK</div>
   </div>
-  
+
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth-compat.js"></script>
+
+  <!-- App -->
   <script src="js/app.js"></script>
 </body>
 </html>
