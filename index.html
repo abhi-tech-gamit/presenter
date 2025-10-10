@@ -16,6 +16,7 @@
       <h1>Lyrics Presenter</h1>
       <div class="header-controls">
         <div id="userInfo"></div>
+        <button id="projectBtn" class="project-btn" aria-label="Project to screen">🎥 Project</button>
         <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
           <span class="theme-icon">🌙</span>
         </button>
@@ -31,21 +32,18 @@
   </div>
   
   <div id="presentation" style="display:none;" aria-hidden="true">
-    <!-- Navigation Buttons -->
     <div class="nav-buttons">
       <button id="backBtn">Back</button>
       <button id="prevBtn">Previous</button>
       <button id="nextBtn">Next</button>
     </div>
     
-    <!-- Font Size Controls -->
     <div class="font-controls">
       <button class="font-btn" id="decreaseFont" aria-label="Decrease font size">−</button>
       <button class="font-btn" id="resetFont" aria-label="Reset font size">A</button>
       <button class="font-btn" id="increaseFont" aria-label="Increase font size">+</button>
     </div>
     
-    <!-- Fixed Title Area -->
     <div class="slide-title-area">
       <h2 id="slideTitle">Slide Title</h2>
     </div>
@@ -57,11 +55,8 @@
     </div>
   </div>
   
-  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth-compat.js"></script>
-  
-  <!-- Your App JavaScript -->
   <script src="js/app.js"></script>
 </body>
 </html>
