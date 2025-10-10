@@ -42,7 +42,7 @@ let currentSlide = 0;
 let currentFontSize = 100;
 let currentTheme = localStorage.getItem('theme') || 'dark';
 let projectorWindow = null;
-let presenterMode = false;         // shows NEXT preview when true
+let presenterMode = true;          // ✅ ON by default now
 let blackedOut = false;            // projector black screen
 
 // ===== Theme =====
@@ -141,6 +141,11 @@ async function startPresentation(file) {
     currentSlide = 0;
     currentFontSize = 100;
     updateFontSize();
+
+    // Presenter mode ON when presenting
+    presenterMode = true;
+    presenterToggle.setAttribute('aria-pressed', 'true');
+    presenterToggle.textContent = '👁 Presenter: ON';
 
     // show presenter view
     menuDiv.style.display = 'none';
@@ -241,10 +246,10 @@ projectBtn.addEventListener('click', () => {
           }
           .wrap {
             width: min(95%, 1800px);
-            padding: clamp(12px, 2vw, 28px);
+            padding: clamp(14px, 2vw, 32px);
             border-radius: 20px;
             background: rgba(0,0,0,0.78);
-            border: 2px solid rgba(255,255,255,0.25);
+            border: 2px solid rgba(255,255,255,0.32);
           }
           h2 {
             margin: 0 0 18px;
@@ -304,7 +309,8 @@ blackScreenBtn.addEventListener('click', () => {
   blackedOut = !blackedOut;
   blackScreenBtn.textContent = blackedOut ? '🖤 Black (ON)' : '🖤 Black';
   blackBadge.style.display = blackedOut ? 'block' : 'none';
-  updateProjector(slideTitle.textContent, slideText.textContent);
+  // Re-apply overlay state
+  updateProjector(slideTitle.textContent, slideText.innerText || '');
 });
 
 // ===== Keyboard Shortcuts =====
