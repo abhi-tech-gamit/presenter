@@ -1,3 +1,4 @@
+/* Base */
 body {
   margin: 0;
   font-family: 'Roboto', sans-serif;
@@ -8,7 +9,7 @@ body {
   transition: background 0.5s ease;
 }
 
-/* Blue Theme */
+/* Blue Theme background */
 body.blue-theme {
   background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
 }
@@ -18,43 +19,47 @@ body.blue-theme {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
   margin-bottom: 20px;
 }
 
-/* Project Button */
-.project-btn {
-  background: #444;
-  border: 1px solid #777;
+.project-controls { display: flex; gap: 8px; align-items: center; }
+
+/* Buttons */
+.project-btn, .black-btn, .presenter-btn, button {
+  background: #333;
+  border: 1px solid #555;
   color: #fff;
   border-radius: 8px;
   padding: 8px 14px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
-.project-btn:hover {
-  background: #666;
-  transform: scale(1.05);
+.project-btn:hover, .black-btn:hover, .presenter-btn:hover, button:hover {
+  background: #555;
+  transform: translateY(-1px);
+}
+
+/* Presenter toggle states */
+.presenter-btn[aria-pressed="true"] {
+  background: #0d6efd;
+  border-color: #3a82ff;
+}
+.presenter-btn[aria-pressed="true"]:hover {
+  background: #276ef1;
 }
 
 /* Theme Toggle */
 .theme-toggle {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 50px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 50%;
   width: 50px;
   height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  display: grid;
+  place-items: center;
 }
-.theme-toggle:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-.theme-icon {
-  font-size: 24px;
-}
+.theme-icon { font-size: 24px; }
 
 /* Menu */
 #menu {
@@ -71,143 +76,199 @@ body.blue-theme {
 }
 #search {
   width: 100%;
-  padding: 15px 50px 15px 20px;
+  padding: 15px 20px;
   border-radius: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.05);
   color: #fff;
   font-size: 16px;
 }
 
-/* Presentation */
+/* Song List */
+#songList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 15px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+#songList > div {
+  cursor: pointer;
+  padding: 15px;
+  border: 1px solid #333;
+  border-radius: 10px;
+  background: #111;
+}
+#songList > div:hover { background: #1a1a1a; }
+
+/* Presentation container */
 #presentation {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
+  inset: 0;
   display: none;
   flex-direction: column;
   z-index: 100;
-  background: #000;
   overflow: hidden;
 }
-body.blue-theme #presentation {
-  background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
-}
 
-/* Navigation Buttons */
+/* Nav buttons at bottom */
 .nav-buttons {
   display: flex;
   justify-content: center;
   gap: 10px;
   position: fixed;
   bottom: 70px;
-  left: 0;
-  right: 0;
+  left: 0; right: 0;
   z-index: 102;
-  padding: 10px 20px;
+  padding: 8px 20px;
 }
 
-/* Buttons */
-button {
-  padding: 10px 18px;
-  margin: 3px;
-  border: none;
-  border-radius: 8px;
-  background: #333;
-  color: #fff;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-size: 16px;
-}
-button:hover {
-  background: #555;
-}
-
-/* Title Area */
-.slide-title-area {
-  position: fixed;
-  top: 20px;
-  left: 0;
-  right: 0;
-  text-align: center;
-  z-index: 101;
-}
-.slide-title-area h2 {
-  font-size: clamp(1.5rem, 3.5vw, 2.5rem);
-  font-weight: 800;
-  background: linear-gradient(90deg, #74b9ff 0%, #0984e3 100%);
-  -webkit-background-clip: text;
-  color: transparent;
-  margin: 0;
-}
-
-/* Slide Container */
-#slideContainer {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding-top: 180px;
-  padding-bottom: 120px;
-  box-sizing: border-box;
-}
-
-/* Slide Content */
-.slide-content {
-  width: 95%;
-  background: rgba(0, 0, 0, 0.85);
-  padding: 20px 25px;
-  border-radius: 15px;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-}
-
-/* Slide Text */
-#slideText {
-  font-size: clamp(5rem, 22vh, 20rem);
-  line-height: 1.2;
-  text-align: center;
-  color: #fff;
-  font-weight: 700;
-  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
-  margin: 0;
-}
-
-/* Font Controls */
+/* Font controls pinned bottom */
 .font-controls {
   display: flex;
   justify-content: center;
   gap: 8px;
   position: fixed;
   bottom: 10px;
-  left: 0;
-  right: 0;
+  left: 0; right: 0;
   z-index: 102;
 }
-
-/* Font Buttons */
 .font-btn {
-  width: 40px;
-  height: 40px;
+  width: 40px; height: 40px;
   border-radius: 50%;
-  font-size: 18px;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-size: 18px; font-weight: bold;
+  display: grid; place-items: center;
 }
 
-/* Loading Spinner */
+/* Title area pinned top */
+.slide-title-area {
+  position: fixed;
+  top: 20px; left: 0; right: 0;
+  text-align: center;
+  z-index: 101;
+  padding: 6px 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.55), rgba(0,0,0,0));
+  pointer-events: none;
+}
+.slide-title-area h2 {
+  margin: 0;
+  font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+  font-weight: 800;
+  background: linear-gradient(90deg, #74b9ff 0%, #0984e3 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Slide container (adds spacing below title and above controls) */
+#slideContainer {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 160px;   /* below title */
+  padding-bottom: 120px;/* above bottom controls */
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Safe bordered lyrics card (theme-adaptive border) */
+.slide-content {
+  width: min(95%, 1800px);
+  margin: 0 auto;
+  padding: clamp(12px, 2vw, 28px);
+  border-radius: 20px;
+  background: rgba(0,0,0,0.78);
+  border: 2px solid rgba(255,255,255,0.25);      /* dark theme border */
+  box-shadow:
+    0 10px 40px rgba(0,0,0,0.55),
+    inset 0 1px 8px rgba(255,255,255,0.08);
+}
+body.blue-theme .slide-content {
+  background: rgba(255,255,255,0.08);
+  border: 2px solid rgba(116,185,255,0.6);       /* blue theme border */
+  box-shadow:
+    0 12px 48px rgba(0,0,0,0.35),
+    0 0 24px rgba(116,185,255,0.35),             /* soft glow */
+    inset 0 1px 10px rgba(255,255,255,0.15);
+}
+
+/* Current lyrics (very large) */
+#slideText.current-lyrics {
+  font-size: clamp(5rem, 22vh, 20rem);
+  line-height: 1.18;
+  text-align: center;
+  margin: 0;
+  color: #fff;
+  text-shadow: 0 4px 18px rgba(0,0,0,0.75);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  white-space: pre-wrap;
+}
+
+/* Presenter next preview area (stacked below) */
+.next-preview {
+  margin-top: clamp(12px, 2vh, 28px);
+}
+.next-preview .divider {
+  height: 2px;
+  width: 60%;
+  margin: 0.5rem auto 0.75rem;
+  background: rgba(255,255,255,0.25);
+  border-radius: 2px;
+}
+body.blue-theme .next-preview .divider {
+  background: rgba(116,185,255,0.55);
+}
+
+/* Label + next lyrics smaller */
+.next-label {
+  text-align: center;
+  font-size: clamp(0.9rem, 1.6vw, 1.2rem);
+  letter-spacing: 0.08em;
+  opacity: 0.8;
+  margin: 0 0 0.25rem;
+}
+.next-lyrics {
+  text-align: center;
+  margin: 0;
+  font-weight: 700;
+  font-size: clamp(2rem, 9vh, 7rem);  /* smaller than current */
+  line-height: 1.15;
+  opacity: 0.8;
+  white-space: pre-wrap;
+}
+
+/* Black badge for presenter view */
+.black-badge {
+  position: fixed;
+  top: 16px; right: 16px;
+  background: #000;
+  color: #fff;
+  border: 1px solid #ff4d4d;
+  padding: 6px 10px;
+  border-radius: 8px;
+  z-index: 110;
+  font-weight: 700;
+  box-shadow: 0 0 10px rgba(255,77,77,0.5);
+}
+
+/* Loading spinner */
 .loading {
   display: inline-block;
-  width: 24px;
-  height: 24px;
+  width: 24px; height: 24px;
   border: 3px solid rgba(255,255,255,.3);
   border-radius: 50%;
   border-top-color: #fff;
   animation: spin 1s linear infinite;
+  vertical-align: middle;
 }
-@keyframes spin {
-  to { transform: rotate(360deg); }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  #slideContainer { padding-top: 130px; padding-bottom: 95px; }
+  #slideText.current-lyrics { font-size: clamp(3rem, 16vh, 12rem); }
+  .next-lyrics { font-size: clamp(1.5rem, 7.5vh, 5.5rem); }
 }
