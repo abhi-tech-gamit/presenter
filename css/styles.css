@@ -6,7 +6,7 @@ body {
   color: #fff;
   line-height: 1.6;
   transition: background 0.5s ease;
-  overflow: hidden; /* Prevent overall page scrolling */
+  overflow: hidden;
 }
 
 /* Blue Theme */
@@ -23,7 +23,7 @@ body.blue-theme {
   margin-bottom: 20px;
 }
 
-/* Theme Toggle Button */
+/* Theme Toggle */
 .theme-toggle {
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -49,7 +49,7 @@ body.blue-theme {
   transition: transform 0.3s ease;
 }
 
-/* Menu Container */
+/* Menu */
 #menu {
   padding: 20px;
   max-width: 1200px;
@@ -101,7 +101,7 @@ body.blue-theme #songList div:hover {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Search Container */
+/* Search */
 .search-container {
   position: relative;
   max-width: 600px;
@@ -128,18 +128,7 @@ body.blue-theme #songList div:hover {
   background: rgba(255, 255, 255, 0.1);
 }
 
-body.blue-theme #search {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: #fff;
-}
-
-body.blue-theme #search:focus {
-  border-color: rgba(255, 255, 255, 0.6);
-  background: rgba(255, 255, 255, 0.2);
-}
-
-/* Presentation Container */
+/* Presentation */
 #presentation {
   position: fixed;
   top: 0;
@@ -158,14 +147,13 @@ body.blue-theme #presentation {
   background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
 }
 
-/* Navigation Buttons - Moved to Bottom */
+/* Navigation Buttons (Bottom Center) */
 .nav-buttons {
   display: flex;
   justify-content: center;
   gap: 10px;
   position: fixed;
-  bottom: 70px; /* above font controls */
-  top: auto;
+  bottom: 70px;
   left: 0;
   right: 0;
   z-index: 102;
@@ -231,10 +219,6 @@ body.blue-theme button:hover {
   pointer-events: none;
 }
 
-body.blue-theme .slide-title-area {
-  background: linear-gradient(to bottom, rgba(15, 12, 41, 0.8) 0%, rgba(15, 12, 41, 0) 100%);
-}
-
 .slide-title-area h2 {
   font-size: clamp(1.2rem, 3vw, 2rem);
   font-weight: 800;
@@ -251,10 +235,12 @@ body.blue-theme .slide-title-area {
   flex: 1;
   display: flex;
   justify-content: center;
-  align-items: center;
-  padding: 0;
+  align-items: flex-start; /* Align from top instead of center */
+  padding-top: 140px; /* Space below title */
+  padding-bottom: 100px; /* Space above buttons */
   position: relative;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 /* Slide Content */
@@ -271,8 +257,6 @@ body.blue-theme .slide-title-area {
   box-shadow:
     0 10px 40px rgba(0, 0, 0, 0.5),
     inset 0 1px 10px rgba(255, 255, 255, 0.1);
-  position: relative;
-  overflow: hidden;
   transition: all 0.3s ease;
   box-sizing: border-box;
 }
@@ -294,8 +278,6 @@ body.blue-theme .slide-content {
   max-width: 100%;
   transition: font-size 0.3s ease;
   margin: 0;
-  position: relative;
-  z-index: 2;
   color: #fff;
   font-weight: 700;
   word-wrap: break-word;
@@ -303,82 +285,7 @@ body.blue-theme .slide-content {
   hyphens: auto;
 }
 
-body.blue-theme #slideText {
-  text-shadow: none;
-  color: #fff;
-}
-
-/* User Info */
-.user-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #222;
-  padding: 10px 15px;
-  border-radius: 5px;
-  margin-bottom: 20px;
-  border: 1px solid #555;
-  transition: all 0.3s ease;
-  color: #fff;
-}
-
-body.blue-theme .user-info {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 30px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  color: #fff;
-}
-
-.username {
-  font-weight: bold;
-  color: #fff;
-}
-
-.logout-btn {
-  background: #333;
-  border: 1px solid #555;
-  color: white;
-  padding: 5px 12px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s ease;
-}
-
-.logout-btn:hover {
-  background: #555;
-}
-
-body.blue-theme .logout-btn {
-  background: rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #fff;
-}
-
-body.blue-theme .logout-btn:hover {
-  background: rgba(0, 0, 0, 0.1);
-}
-
-/* Loading Animation */
-.loading {
-  display: inline-block;
-  width: 24px;
-  height: 24px;
-  border: 3px solid rgba(255,255,255,.3);
-  border-radius: 50%;
-  border-top-color: #fff;
-  animation: spin 1s ease-in-out infinite;
-  margin-left: 10px;
-  vertical-align: middle;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-/* Font Size Controls */
+/* Font Controls */
 .font-controls {
   display: flex;
   justify-content: center;
@@ -399,7 +306,6 @@ body.blue-theme .font-controls {
   border-radius: 15px;
   padding: 10px;
   margin: 10px;
-  position: relative;
 }
 
 .font-btn {
@@ -413,71 +319,18 @@ body.blue-theme .font-controls {
   justify-content: center;
 }
 
-/* Responsive Adjustments */
+/* Responsive */
 @media (max-width: 768px) {
-  .header-controls {
-    flex-direction: column;
-    gap: 15px;
-    align-items: stretch;
-  }
-
-  .theme-toggle {
-    align-self: center;
-    width: 50px;
-    height: 50px;
-  }
-
-  .theme-icon {
-    font-size: 24px;
-  }
-
-  #menu {
-    padding: 15px;
-  }
-
-  #songList {
-    grid-template-columns: 1fr;
-    gap: 15px;
-    max-width: 100%;
-  }
-
-  #songList div {
-    padding: 12px;
-    font-size: 16px;
-  }
-
   .slide-title-area {
-    top: 15px;
-    padding: 8px;
+    top: 10px;
   }
 
-  .slide-title-area h2 {
-    font-size: clamp(1rem, 2.5vw, 1.5rem);
-  }
-
-  .slide-content {
-    padding: 10px 15px;
-    width: 98%;
+  #slideContainer {
+    padding-top: 120px;
+    padding-bottom: 80px;
   }
 
   #slideText {
     font-size: clamp(2.5rem, 15vh, 10rem);
-  }
-
-  .font-controls {
-    bottom: 5px;
-    gap: 6px;
-  }
-
-  .font-btn {
-    width: 36px;
-    height: 36px;
-    font-size: 16px;
-  }
-
-  button {
-    padding: 6px 12px;
-    font-size: 12px;
-    min-height: 36px;
   }
 }
