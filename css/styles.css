@@ -139,7 +139,7 @@ body.blue-theme #search:focus {
   background: rgba(255, 255, 255, 0.2);
 }
 
-/* Presentation Container - Optimized for maximum text display */
+/* Presentation Container */
 #presentation {
   position: fixed;
   top: 0;
@@ -151,24 +151,25 @@ body.blue-theme #search:focus {
   z-index: 100;
   background: #000;
   transition: background 0.5s ease;
-  overflow: hidden; /* Prevent scrolling */
+  overflow: hidden;
 }
 
 body.blue-theme #presentation {
   background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
 }
 
-/* Navigation Buttons - Compact design */
+/* Navigation Buttons - Moved to Bottom */
 .nav-buttons {
   display: flex;
   justify-content: center;
   gap: 10px;
   position: fixed;
-  top: 10px;
+  bottom: 70px; /* above font controls */
+  top: auto;
   left: 0;
   right: 0;
   z-index: 102;
-  padding: 0 20px;
+  padding: 10px 20px;
   box-sizing: border-box;
 }
 
@@ -178,11 +179,16 @@ body.blue-theme .nav-buttons {
   -webkit-backdrop-filter: blur(10px);
   border-radius: 15px;
   padding: 10px;
-  margin: 10px;
-  position: relative;
+  margin: 10px auto;
+  width: fit-content;
+  position: fixed;
+  bottom: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  top: auto;
 }
 
-/* Buttons - Smaller and more compact */
+/* Buttons */
 button {
   padding: 8px 15px;
   margin: 3px;
@@ -212,10 +218,10 @@ body.blue-theme button:hover {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* Slide Title Area - Compact */
+/* Slide Title Area */
 .slide-title-area {
   position: fixed;
-  top: 60px;
+  top: 20px;
   left: 0;
   right: 0;
   z-index: 101;
@@ -240,29 +246,29 @@ body.blue-theme .slide-title-area {
   margin: 0;
 }
 
-/* Slide Container - Optimized for maximum text display */
+/* Slide Container */
 #slideContainer {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0; /* No padding to maximize space */
+  padding: 0;
   position: relative;
-  overflow: hidden; /* Prevent scrolling */
+  overflow: hidden;
 }
 
-/* Slide Content - Minimal padding */
+/* Slide Content */
 .slide-content {
-  width: 95%; /* Almost full width */
+  width: 95%;
   max-width: 95%;
   margin: 0 auto;
-  padding: 15px 20px; /* Minimal padding */
+  padding: 15px 20px;
   background: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border-radius: 15px;
   border: 2px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 
+  box-shadow:
     0 10px 40px rgba(0, 0, 0, 0.5),
     inset 0 1px 10px rgba(255, 255, 255, 0.1);
   position: relative;
@@ -274,16 +280,15 @@ body.blue-theme .slide-title-area {
 body.blue-theme .slide-content {
   background: rgba(255, 255, 255, 0.1);
   border: 2px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 
+  box-shadow:
     0 10px 40px rgba(0, 0, 0, 0.3),
     inset 0 1px 10px rgba(255, 255, 255, 0.2);
 }
 
-/* Optimized text sizing for maximum screen coverage */
+/* Slide Text */
 #slideText {
-  /* Using viewport units for maximum screen coverage */
-  font-size: clamp(3rem, 18vh, 15rem); /* Scales with viewport height */
-  line-height: 1.1; /* Tighter line height for large text */
+  font-size: clamp(3rem, 18vh, 15rem);
+  line-height: 1.1;
   text-align: center;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
   max-width: 100%;
@@ -295,7 +300,7 @@ body.blue-theme .slide-content {
   font-weight: 700;
   word-wrap: break-word;
   overflow-wrap: break-word;
-  hyphens: auto; /* Add hyphens for long words */
+  hyphens: auto;
 }
 
 body.blue-theme #slideText {
@@ -373,7 +378,7 @@ body.blue-theme .logout-btn:hover {
   to { transform: rotate(360deg); }
 }
 
-/* Font Size Controls - Compact design */
+/* Font Size Controls */
 .font-controls {
   display: flex;
   justify-content: center;
@@ -415,73 +420,61 @@ body.blue-theme .font-controls {
     gap: 15px;
     align-items: stretch;
   }
-  
+
   .theme-toggle {
     align-self: center;
     width: 50px;
     height: 50px;
   }
-  
+
   .theme-icon {
     font-size: 24px;
   }
-  
+
   #menu {
     padding: 15px;
   }
-  
+
   #songList {
     grid-template-columns: 1fr;
     gap: 15px;
     max-width: 100%;
   }
-  
+
   #songList div {
     padding: 12px;
     font-size: 16px;
   }
-  
-  .nav-buttons {
-    flex-direction: row;
-    padding: 8px;
-    top: 5px;
-  }
-  
-  body.blue-theme .nav-buttons {
-    flex-direction: row;
-    padding: 8px;
-  }
-  
+
   .slide-title-area {
-    top: 50px;
+    top: 15px;
     padding: 8px;
   }
-  
+
   .slide-title-area h2 {
     font-size: clamp(1rem, 2.5vw, 1.5rem);
   }
-  
+
   .slide-content {
     padding: 10px 15px;
     width: 98%;
   }
-  
-  /* Mobile text sizing - still large but optimized for smaller screens */
+
   #slideText {
     font-size: clamp(2.5rem, 15vh, 10rem);
   }
-  
+
   .font-controls {
     bottom: 5px;
     gap: 6px;
   }
-  
+
   .font-btn {
     width: 36px;
     height: 36px;
     font-size: 16px;
   }
-  
+
   button {
     padding: 6px 12px;
     font-size: 12px;
