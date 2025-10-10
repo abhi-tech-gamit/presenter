@@ -25,7 +25,7 @@ body.blue-theme {
 
 .project-controls { display: flex; gap: 8px; align-items: center; }
 
-/* Buttons */
+/* Generic buttons */
 .project-btn, .black-btn, .presenter-btn, button {
   background: #333;
   border: 1px solid #555;
@@ -33,7 +33,7 @@ body.blue-theme {
   border-radius: 8px;
   padding: 8px 14px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
 }
 .project-btn:hover, .black-btn:hover, .presenter-btn:hover, button:hover {
   background: #555;
@@ -176,20 +176,20 @@ body.blue-theme {
 .slide-content {
   width: min(95%, 1800px);
   margin: 0 auto;
-  padding: clamp(12px, 2vw, 28px);
+  padding: clamp(14px, 2vw, 32px);
   border-radius: 20px;
   background: rgba(0,0,0,0.78);
-  border: 2px solid rgba(255,255,255,0.25);      /* dark theme border */
+  border: 2px solid rgba(255,255,255,0.32);      /* dark theme border stronger */
   box-shadow:
     0 10px 40px rgba(0,0,0,0.55),
     inset 0 1px 8px rgba(255,255,255,0.08);
 }
 body.blue-theme .slide-content {
   background: rgba(255,255,255,0.08);
-  border: 2px solid rgba(116,185,255,0.6);       /* blue theme border */
+  border: 2px solid rgba(116,185,255,0.75);       /* blue theme border brighter */
   box-shadow:
     0 12px 48px rgba(0,0,0,0.35),
-    0 0 24px rgba(116,185,255,0.35),             /* soft glow */
+    0 0 26px rgba(116,185,255,0.45),             /* soft glow */
     inset 0 1px 10px rgba(255,255,255,0.15);
 }
 
@@ -209,17 +209,17 @@ body.blue-theme .slide-content {
 
 /* Presenter next preview area (stacked below) */
 .next-preview {
-  margin-top: clamp(12px, 2vh, 28px);
+  margin-top: clamp(14px, 2vh, 32px);
 }
 .next-preview .divider {
   height: 2px;
   width: 60%;
   margin: 0.5rem auto 0.75rem;
-  background: rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.35);
   border-radius: 2px;
 }
 body.blue-theme .next-preview .divider {
-  background: rgba(116,185,255,0.55);
+  background: rgba(116,185,255,0.65);
 }
 
 /* Label + next lyrics smaller */
@@ -227,7 +227,7 @@ body.blue-theme .next-preview .divider {
   text-align: center;
   font-size: clamp(0.9rem, 1.6vw, 1.2rem);
   letter-spacing: 0.08em;
-  opacity: 0.8;
+  opacity: 0.85;
   margin: 0 0 0.25rem;
 }
 .next-lyrics {
@@ -236,7 +236,7 @@ body.blue-theme .next-preview .divider {
   font-weight: 700;
   font-size: clamp(2rem, 9vh, 7rem);  /* smaller than current */
   line-height: 1.15;
-  opacity: 0.8;
+  opacity: 0.88;
   white-space: pre-wrap;
 }
 
